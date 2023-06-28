@@ -30,5 +30,5 @@ const ic_history_img4 = 'images/icons/ic_arrived.png';
 const ic_history_img5 = 'images/icons/in_progress.png';
 const ic_history_img6 = 'images/icons/ic_canceled.png';
 const ic_history_img7 = 'images/icons/ic_completed.png';
-const ic_gallery = "images/ic_gallery.png";
-const ic_camera = "images/ic_camera.png";
+const ic_gallery = "assets/images/ic_gallery.png";
+const ic_camera = "assets/images/ic_camera.png";

@@ -1,3 +1,4 @@
+import 'package:cabuser/Screens/GoRideHomeScreen.dart';
 import 'package:cabuser/goRideMain.dart';
 import 'package:cabuser/network/RestApis.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,7 @@ Future<void> initialize({
   selectedLanguageDataModel =
       getSelectedLanguageModel(defaultLanguage: default_Language);
 }
-
+bool next = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   sharedPref = await SharedPreferences.getInstance();
@@ -77,6 +78,7 @@ void main() async {
   await appStore.setUserEmail(sharedPref.getString(USER_EMAIL) ?? '',
       isInitialization: true);
   await appStore.setUserProfile(sharedPref.getString(USER_PROFILE_PHOTO) ?? '');
+
 
   await OneSignal.shared.setAppId(mOneSignalAppIdRider);
   OneSignal.shared.consentGranted(true);
@@ -104,9 +106,9 @@ void main() async {
     });
   }
 
-  runApp(const MaterialApp(
+  runApp( MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: GoRideMain(),
+    home:  GoRideMain(),
   ));
 }
 

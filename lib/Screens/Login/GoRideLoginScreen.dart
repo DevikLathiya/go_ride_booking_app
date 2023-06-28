@@ -525,15 +525,13 @@ class GoRideLoginScreenState extends State<GoRideLoginScreen>
 
       await logInApi(req).then((value) {
         _userModel = value.data!;
-
-        _auth.signInWithEmailAndPassword(
-                email: emailController.text, password: passController.text)
-            .then((value) {
+      sharedPref.setBool(IS_FIRST_TIME,true);
+      sharedPref.setBool(IS_LOGGED_IN,true);
+        _auth.signInWithEmailAndPassword(email: emailController.text, password: passController.text).then((value) {
           sharedPref.setString(UID, value.user!.uid);
           // sharedPref.setBool(IS_FIRST_TIME,true);
           updateProfileUid();
-          launchScreen(context, GoRideHomeScreen(),
-              isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+          launchScreen(context, GoRideHomeScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
         }).catchError((e) {
           if (e.toString().contains('user-not-found')) {
             authService.signUpWithEmailPassword(
@@ -547,8 +545,7 @@ class GoRideLoginScreenState extends State<GoRideLoginScreen>
               userType: RIDER,
             );
           } else {
-            launchScreen(context, GoRideHomeScreen(),
-                isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+            launchScreen(context, GoRideHomeScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
           }
           //toast(e.toString());
           log(e.toString());

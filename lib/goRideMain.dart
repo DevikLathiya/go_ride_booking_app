@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:cabuser/Screens/GoRideHomeScreen.dart';
+import 'package:cabuser/utils/Constants.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +28,12 @@ class GoRideMain extends StatefulWidget {
 bool isCurrentlyOnNoInternet = false;
 class _GoRideMainState extends State<GoRideMain> {
   late StreamSubscription<ConnectivityResult> connectivitySubscription;
+  bool next = false;
 
   @override
   void initState() {
     super.initState();
+    next = sharedPref.getBool(IS_FIRST_TIME) ?? false;
     init();
   }
 
@@ -73,7 +77,7 @@ class _GoRideMainState extends State<GoRideMain> {
         builder: (context, child) {
           return ScrollConfiguration(behavior: MyBehavior(), child: child!);
         },
-      home: const GoRideSplashScreen(),
+      home: GoRideSplashScreen() ,
       supportedLocales: LanguageDataModel.languageLocales(),
       localizationsDelegates: [
         AppLocalizations(),

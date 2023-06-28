@@ -1,19 +1,31 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:cabuser/main.dart';
+import 'package:cabuser/utils/Common.dart';
+import 'package:cabuser/utils/Constants.dart';
+import 'package:cabuser/utils/Extensions/StringExtensions.dart';
+import 'package:cabuser/utils/Extensions/app_common.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:cabuser/Helper/GoRIdeConstant.dart';
 import 'package:cabuser/Helper/GoRideColor.dart';
 import 'package:cabuser/Helper/GoRideStringRes.dart';
 import 'package:cabuser/Screens/Address/GoRideMyAddress.dart';
 
+import '../../components/ImageSourceDialog.dart';
+import '../../network/RestApis.dart';
 import '../GoRideDrawerHome.dart';
 import '../GoRideHomeScreen.dart';
 import 'GoRIdeNewPwd.dart';
 import 'GoRideEditProfile.dart';
 
 class GoRideEditProfileShow extends StatefulWidget {
-  const GoRideEditProfileShow({Key? key}) : super(key: key);
+  final bool? isGoogle;
+  GoRideEditProfileShow({this.isGoogle = false});
 
   @override
   State<StatefulWidget> createState() {
@@ -22,6 +34,83 @@ class GoRideEditProfileShow extends StatefulWidget {
 }
 
 class GoRideEditProfileShowState extends State<GoRideEditProfileShow> {
+  XFile? imageProfile;
+  String countryCode = defaultCountryCode;
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController contactNumberController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  String Gender="";
+
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Widget profileImage() {
+    if (imageProfile != null) {
+      return Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child: Image.file(File(imageProfile!.path), height: 100, width: 100, fit: BoxFit.cover, alignment: Alignment.center),
+        ),
+      );
+    } else {
+      if (sharedPref.getString(USER_PROFILE_PHOTO)!.isNotEmpty) {
+        return Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: commonCachedNetworkImage(sharedPref.getString(USER_PROFILE_PHOTO).validate(), fit: BoxFit.cover,
+                height: 100, width: 100),
+          ),
+        );
+      } else {
+        return Center(
+          child: Padding(
+            padding: EdgeInsets.only(left: 4, bottom: 4),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: commonCachedNetworkImage(sharedPref.getString(USER_PROFILE_PHOTO).validate(), height: 90, width: 90),
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() async {
+    appStore.setLoading(true);
+    getUserDetail(userId: sharedPref.getInt(USER_ID)).then((value) {
+      emailController.text = value.data!.email.validate();
+      usernameController.text = value.data!.username.validate();
+      firstNameController.text = value.data!.firstName.validate();
+      lastNameController.text = value.data!.lastName.validate();
+      addressController.text = value.data!.address.validate();
+      contactNumberController.text = value.data!.contactNumber.validate();
+      // Gender=value.data!.gender.validate();
+      Gender = sharedPref.getString(GENDER) ?? "Male";
+
+      appStore.setUserEmail(value.data!.email.validate());
+      appStore.setUserName(value.data!.username.validate());
+      appStore.setFirstName(value.data!.firstName.validate());
+
+      sharedPref.setString(USER_EMAIL, value.data!.email.validate());
+      sharedPref.setString(FIRST_NAME, value.data!.firstName.validate());
+      sharedPref.setString(LAST_NAME, value.data!.lastName.validate());
+
+      appStore.setLoading(false);
+      setState(() {});
+    }).catchError((error) {
+      log(error.toString());
+      appStore.setLoading(false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -95,287 +184,325 @@ class GoRideEditProfileShowState extends State<GoRideEditProfileShow> {
 
               //  PreferredSizeAppBar(title: GoRideStringRes.editProfile,)
             ),
-            body: Container(
-                height: MediaQuery.of(context).size.height,
-                padding: EdgeInsets.only(top: 30),
-                decoration: GoRideConstant.boxDecorationContainer(
-                    GoRideColors.white, false),
-                child: Column(children: [
-                  imageAndText(),
-                  Container(
-                      margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * .1,
-                          right: MediaQuery.of(context).size.width * .1,
-                          top: 5),
-                      child: Divider(
-                        color: Color(0x25707070),
-                        thickness: 2,
-                      )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .1),
-                        child: Text(
-                          GoRideStringRes.personalDetail,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 22.0),
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      GoRideEditProfile(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              GoRideStringRes.Edit,
-                              style: TextStyle(
-                                  color: GoRideColors.yellow,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            )),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .1),
-                        child: SvgPicture.asset(
-                            GoRideConstant.getSvgImagePath("pro.user.svg")),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          "Divy Jani",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .1),
-                        child: SvgPicture.asset(
-                            GoRideConstant.getSvgImagePath("pro.mail.svg")),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          "abcd2021@gmail.com",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .1),
-                        child: SvgPicture.asset(
-                            GoRideConstant.getSvgImagePath("pro.phone.svg")),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          "0123456789",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .1),
-                        child: SvgPicture.asset(
-                            GoRideConstant.getSvgImagePath("pro.gender.svg")),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          "Male",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .1),
-                        child: SvgPicture.asset(
-                            GoRideConstant.getSvgImagePath("pro.password.svg")),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          "●●●●●●●",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => GoRideNewPwd(),
-                            ),
-                          );
-                        },
-                        child: Padding(
+            body: Form(
+              key: _formKey,
+              child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(top: 30),
+                  decoration: GoRideConstant.boxDecorationContainer(
+                      GoRideColors.white, false),
+                  child: Column(children: [
+                    imageAndText(),
+                    Container(
+                        margin: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * .1,
+                            right: MediaQuery.of(context).size.width * .1,
+                            top: 5),
+                        child: Divider(
+                          color: Color(0x25707070),
+                          thickness: 2,
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
                           padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * .5),
+                              left: MediaQuery.of(context).size.width * .1),
+                          child: Text(
+                            GoRideStringRes.personalDetail,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 22.0),
+                          child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        GoRideEditProfile(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                GoRideStringRes.Edit,
+                                style: TextStyle(
+                                    color: GoRideColors.yellow,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              )),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * .1),
                           child: SvgPicture.asset(
-                              GoRideConstant.getSvgImagePath(
-                                  "pro.right_arrow.svg")),
+                              GoRideConstant.getSvgImagePath("pro.user.svg")),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * .1,
-                          right: MediaQuery.of(context).size.width * .1,
-                          top: 5),
-                      child: Divider(
-                        color: Color(0x25707070),
-                        thickness: 2,
-                      )),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .1),
-                        child: Text(
-                          GoRideStringRes.Address,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  GoRideMyAddress(),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            "${usernameController.text}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
                             ),
-                          );
-                        },
-                        child: Padding(
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * .1),
+                          child: SvgPicture.asset(
+                              GoRideConstant.getSvgImagePath("pro.mail.svg")),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            "${emailController.text}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * .1),
+                          child: SvgPicture.asset(
+                              GoRideConstant.getSvgImagePath("pro.phone.svg")),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            "${contactNumberController.text}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * .1),
+                          child: SvgPicture.asset(
+                              GoRideConstant.getSvgImagePath("pro.gender.svg")),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: (Gender.isEmpty) ? Text(
+                            "Male",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ) :  Text(
+                            "${Gender}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * .1),
+                          child: SvgPicture.asset(
+                              GoRideConstant.getSvgImagePath("pro.password.svg")),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            "●●●●●●●",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => GoRideNewPwd(),
+                              ),
+                            );
+                          },
+                          child: Padding(
                             padding: EdgeInsets.only(
-                                right: MediaQuery.of(context).size.width * .1),
+                                left: MediaQuery.of(context).size.width * .5),
                             child: SvgPicture.asset(
                                 GoRideConstant.getSvgImagePath(
-                                    "pro.right_arrow.svg"))),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * .1,
-                      ),
-                      SvgPicture.asset(
-                          GoRideConstant.getSvgImagePath("pro.address.svg")),
-                      // SizedBox(width: MediaQuery.of(context).size.width*.1,),
-                      Container(
-                        width: 270,
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.only(left: 8.0),
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "Nr Hotel Vrinadavan, Hari Niwas Circle, Opp Manalisa Blg, Thane (west)",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                                    "pro.right_arrow.svg")),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * .15,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      xOffset = 0;
-                      yOffset = 0;
-                      scaleFactor = 1;
-                      isDrawerOpen = false;
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => HomePage(),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * .1,
+                            right: MediaQuery.of(context).size.width * .1,
+                            top: 5),
+                        child: Divider(
+                          color: Color(0x25707070),
+                          thickness: 2,
+                        )),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * .1),
+                          child: Text(
+                            GoRideStringRes.Address,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
                         ),
-                      );
-                    },
-                    child: Text(
-                      GoRideStringRes.SaveProfile,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: GoRideColors.black,
-                          fontSize: 16),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    GoRideMyAddress(),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                              padding: EdgeInsets.only(
+                                  right: MediaQuery.of(context).size.width * .1),
+                              child: SvgPicture.asset(
+                                  GoRideConstant.getSvgImagePath(
+                                      "pro.right_arrow.svg"))),
+                        )
+                      ],
                     ),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(310, 50),
-                      primary: GoRideColors.yellow,
+                    SizedBox(
+                      height: 20,
                     ),
-                  )
-                ]))));
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .1,),
+                        SvgPicture.asset(
+                            GoRideConstant.getSvgImagePath("pro.address.svg")),
+                        // SizedBox(width: MediaQuery.of(context).size.width*.1,),
+                        Container(
+                          width: 270,
+                          margin: EdgeInsets.only(right: 10),
+                          padding: EdgeInsets.only(left: 8.0),
+                          alignment: Alignment.topLeft,
+                          child: (addressController.text.isNotEmpty) ? Text(
+                            "${addressController.text}",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 14,color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ) : Text(
+                            "Address",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ) ,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * .15,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        xOffset = 0;
+                        yOffset = 0;
+                        scaleFactor = 1;
+                        isDrawerOpen = false;
+                        saveProfile();
+                      },
+                      child: Text(
+                        GoRideStringRes.SaveProfile,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: GoRideColors.black,
+                            fontSize: 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(310, 50),
+                        primary: GoRideColors.yellow,
+                      ),
+                    )
+                  ])),
+            )));
+  }
+
+  Future<void> saveProfile() async {
+    hideKeyboard(context);
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      appStore.setLoading(true);
+      await updateProfile(
+        uid: sharedPref.getString(UID).toString(),
+        file: imageProfile != null ? File(imageProfile!.path.validate()) : null,
+        contactNumber: widget.isGoogle == true ? '$countryCode${contactNumberController.text.trim()}' : contactNumberController.text.trim(),
+        address: addressController.text.trim(),
+        firstName: firstNameController.text.trim(),
+        lastName: lastNameController.text.trim(),
+        userEmail: emailController.text.trim(),
+      ).then((value) {
+        appStore.setLoading(false);
+        toast(language.profileUpdateMsg);
+        if (widget.isGoogle == true) {
+          launchScreen(context, GoRideHomeScreen(), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+        } else {
+          Navigator.pop(context);
+        }
+      }).catchError((error) {
+        appStore.setLoading(false);
+        log(error.toString());
+      });
+    }
   }
 
   Widget imageAndText() {
@@ -393,31 +520,57 @@ class GoRideEditProfileShowState extends State<GoRideEditProfileShow> {
                     BoxShadow(
                       color: Color(0x29000000),
                       blurRadius: 8.0, // soften the shadow
-                      spreadRadius: 0.0, //extend the shadow
+                      spreadRadius: 0.0, //extend the shad
                     )
                   ],
                 ),
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: OctoImage(
+                    child: (imageProfile != null) ?
+                    Image.file(File(imageProfile!.path), height: 100, width: 100, fit: BoxFit.cover, alignment: Alignment.center)
+                        : (sharedPref.getString(USER_PROFILE_PHOTO)!.isNotEmpty) ?
+                    commonCachedNetworkImage(sharedPref.getString(USER_PROFILE_PHOTO).validate(), fit: BoxFit.cover,
+                        height: 100, width: 100) : commonCachedNetworkImage(sharedPref.getString(USER_PROFILE_PHOTO).validate(), height: 90, width: 90),
+                    /*OctoImage(
                       image: CachedNetworkImageProvider(
                           "https://firebasestorage.googleapis.com/v0/b/smartkit-8e62c.appspot.com/o/travelapp%2Ftoptrip_b.jpg?alt=media&token=cd01d6b2-2892-4da7-bfee-4069e2e4f7e8"),
-                      placeholderBuilder: OctoPlaceholder.blurHash(
-                        "L5Jk_:009FDi00oJ-oRj00~VMwM{",
-                      ),
+                      placeholderBuilder: OctoPlaceholder.blurHash("L5Jk_:009FDi00oJ-oRj00~VMwM{",),
                       errorBuilder: OctoError.icon(color: GoRideColors.black),
                       fit: BoxFit.contain,
-                    ))),
+                    )*/)),
             Container(
               margin: EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * .24,
                 top: MediaQuery.of(context).size.height * .09,
               ),
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 18,
-                child: SvgPicture.asset(
-                  GoRideConstant.getSvgImagePath("pro.edit_image.svg"),
+              child: InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return ImageSourceDialog(
+                        onCamera: () async {
+                          // Navigator.pop(context);
+                          imageProfile = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 100);
+                          print("imageProfile : $imageProfile");
+                          // Navigator.pop(context);
+                          // setState(() {});
+                        },
+                        onGallery: () async {
+                          // Navigator.pop(context);
+                          imageProfile = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 100);
+                          // setState(() {});
+                        },
+                      );
+                    },
+                  );
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 18,
+                  child: SvgPicture.asset(
+                    GoRideConstant.getSvgImagePath("pro.edit_image.svg"),
+                  ),
                 ),
               ),
             )
@@ -431,13 +584,13 @@ class GoRideEditProfileShowState extends State<GoRideEditProfileShow> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children:  [
               Text(
-                "JOHN DOE",
+                "${usernameController.text}",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                "abcd2021@gmail.com",
+                "${emailController.text}",
                 style: TextStyle(fontSize: 12, color: Color(0xff818181)),
               ),
             ],
