@@ -1,8 +1,10 @@
 import 'package:cabuser/Helper/GoRIdeConstant.dart';
 import 'package:cabuser/Helper/GoRideColor.dart';
+import 'package:cabuser/Helper/GoRideStringRes.dart';
 import 'package:cabuser/Screens/Widget/AppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../main.dart';
 import '../../network/RestApis.dart';
@@ -100,18 +102,57 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * .1,
+                            top: MediaQuery.of(context).size.height * .02),
+                        child: Text(
+                          GoRideStringRes.newCredential,
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 24),
+                        )),
+
+                    Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * .1,
+                          right: MediaQuery.of(context).size.width * .1,
+                        ),
+                        child: Text(
+                          "Set your new password",
+                          style: TextStyle(fontSize: 14, color: Color(0xffa2a2a2)),
+                        )),
+                        Container(
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .1,
-                            top: MediaQuery.of(context).size.height * .05,
-                            right: MediaQuery.of(context).size.width * .1,
+                            left: MediaQuery.of(context).size.width * .05,
+                            top: MediaQuery.of(context).size.height * .04,
+                            right: MediaQuery.of(context).size.width * .05,
                           ),
                           child: AppTextField(
                             controller: oldPassController,
                             textFieldType: TextFieldType.PASSWORD,
                             focus: oldPassFocus,
                             nextFocus: newPassFocus,
-                            decoration: inputDecoration(context, label: language.oldPassword),
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: SvgPicture.asset(
+                                    GoRideConstant.getSvgImagePath("pass_icon.svg"),
+                                    fit: BoxFit.scaleDown,
+                                  )),
+                              suffixIcon: SvgPicture.asset(
+                                GoRideConstant.getSvgImagePath("eye_icon.svg"),
+                                fit: BoxFit.scaleDown,
+                              ),
+                              hintText: "Old Passsword",
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xff707070)),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xff707070)),
+                              ),
+                            ),
+                            // decoration: inputDecoration(context, label: language.oldPassword),
                             errorThisFieldRequired: language.thisFieldRequired,
                             errorMinimumPasswordLength: language.passwordInvalid,
                           ),
@@ -120,33 +161,79 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         Container(
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * .1,
+                            left: MediaQuery.of(context).size.width * .05,
                             top: MediaQuery.of(context).size.height * .02,
-                            right: MediaQuery.of(context).size.width * .1,
+                            right: MediaQuery.of(context).size.width * .05,
                           ),
                           child: AppTextField(
                             controller: newPassController,
                             textFieldType: TextFieldType.PASSWORD,
                             focus: newPassFocus,
                             nextFocus: confirmPassFocus,
-                            decoration: inputDecoration(context, label: language.newPassword),
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: SvgPicture.asset(
+                                    GoRideConstant.getSvgImagePath("pass_icon.svg"),
+                                    fit: BoxFit.scaleDown,
+                                  )),
+                              suffixIcon: SvgPicture.asset(
+                                GoRideConstant.getSvgImagePath("eye_icon.svg"),
+                                fit: BoxFit.scaleDown,
+                              ),
+                              hintText: "New Password",
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xff707070)),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xff707070)),
+                              ),
+                            ),
+                            // decoration: inputDecoration(context, label: language.newPassword),
                             errorThisFieldRequired: language.thisFieldRequired,
                             errorMinimumPasswordLength: language.passwordInvalid,
                           ),
                         ),
                         SizedBox(height: 16),
-                        AppTextField(
-                          controller: confirmPassController,
-                          textFieldType: TextFieldType.PASSWORD,
-                          focus: confirmPassFocus,
-                          decoration: inputDecoration(context, label: language.confirmPassword),
-                          errorThisFieldRequired: language.thisFieldRequired,
-                          errorMinimumPasswordLength: language.passwordInvalid,
-                          validator: (val) {
-                            if (val!.isEmpty) return language.thisFieldRequired;
-                            if (val != newPassController.text) return language.passwordDoesNotMatch;
-                            return null;
-                          },
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * .05,
+                            top: MediaQuery.of(context).size.height * .02,
+                            right: MediaQuery.of(context).size.width * .05,
+                          ),
+                          child: AppTextField(
+                            controller: confirmPassController,
+                            textFieldType: TextFieldType.PASSWORD,
+                            focus: confirmPassFocus,
+                            decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: SvgPicture.asset(
+                                    GoRideConstant.getSvgImagePath("pass_icon.svg"),
+                                    fit: BoxFit.scaleDown,
+                                  )),
+                              suffixIcon: SvgPicture.asset(
+                                GoRideConstant.getSvgImagePath("eye_icon.svg"),
+                                fit: BoxFit.scaleDown,
+                              ),
+                              hintText: "Confirm Password",
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xff707070)),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color(0xff707070)),
+                              ),
+                            ),
+                            // decoration: inputDecoration(context, label: language.confirmPassword),
+                            errorThisFieldRequired: language.thisFieldRequired,
+                            errorMinimumPasswordLength: language.passwordInvalid,
+                            validator: (val) {
+                              if (val!.isEmpty) return language.thisFieldRequired;
+                              if (val != newPassController.text) return language.passwordDoesNotMatch;
+                              return null;
+                            },
+                          ),
                         ),
                       ],
                     ),

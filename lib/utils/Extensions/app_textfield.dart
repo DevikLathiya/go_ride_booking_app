@@ -222,7 +222,8 @@ class _AppTextFieldState extends State<AppTextField> {
                       : GestureDetector(
                           child: Icon(
                             isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                            color: widget.suffixIconColor ?? Theme.of(context).iconTheme.color,
+                            color: Colors.grey ?? Theme.of(context).iconTheme.color,
+                             //color: widget.suffixIconColor ?? Theme.of(context).iconTheme.color,
                           ),
                           onTap: () {
                             isPasswordVisible = !isPasswordVisible;
