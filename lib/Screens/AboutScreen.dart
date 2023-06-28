@@ -3,6 +3,7 @@ import 'package:cabuser/Helper/GoRideColor.dart';
 import 'package:cabuser/Helper/GoRideStringRes.dart';
 import 'package:cabuser/Screens/GoRideDrawerHome.dart';
 import 'package:cabuser/Screens/GoRideHomeScreen.dart';
+import 'package:cabuser/Screens/SettingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -85,7 +86,7 @@ class AboutScreenState extends State<AboutScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage()));
+                                  builder: (context) => SettingScreen()));
                         },
                         mini: true,
                         backgroundColor: GoRideColors.white,
@@ -245,8 +246,5 @@ class AboutScreenState extends State<AboutScreen> {
 
         )
     );
-
-
-
   }
 }

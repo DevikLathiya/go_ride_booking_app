@@ -183,6 +183,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/images/flag/
 
     # Dialog screens assets
     - assets/images/dialogs/
