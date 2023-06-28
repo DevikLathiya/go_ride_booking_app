@@ -44,6 +44,7 @@ class OrderDetailScreenState extends State<OrderDetailScreen> {
   @override
   void initState() {
     super.initState();
+    print("--- orderDetail");
     init();
   }
 

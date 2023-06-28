@@ -526,11 +526,11 @@ class GoRideLoginScreenState extends State<GoRideLoginScreen>
       await logInApi(req).then((value) {
         _userModel = value.data!;
 
-        _auth
-            .signInWithEmailAndPassword(
+        _auth.signInWithEmailAndPassword(
                 email: emailController.text, password: passController.text)
             .then((value) {
           sharedPref.setString(UID, value.user!.uid);
+          sharedPref.setBool(IS_FIRST_TIME,true);
           updateProfileUid();
           launchScreen(context, GoRideHomeScreen(),
               isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);

@@ -74,9 +74,11 @@ class GoRideSplashScreenState extends State<GoRideSplashScreen>
 
   void navigationPage() {
     if (sharedPref.getBool(IS_FIRST_TIME) ?? true) {
+      print("IS_FIRST_TIME : $IS_FIRST_TIME");
       launchScreen(context, GopRideWelcomeScreen(), pageRouteAnimation: PageRouteAnimation.Slide);
     } else {
       if (!appStore.isLoggedIn) {
+        print("isLoggedIn");
         launchScreen(context, GoRideLoginScreen(), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
       } else {
         if (sharedPref.getString(CONTACT_NUMBER)!.validate().isEmptyOrNull) {

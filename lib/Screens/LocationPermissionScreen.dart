@@ -1,3 +1,4 @@
+import 'package:cabuser/Helper/GoRideColor.dart';
 import 'package:cabuser/Screens/GoRideHomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,6 +19,7 @@ class LocationPermissionScreenState extends State<LocationPermissionScreen> {
   @override
   void initState() {
     super.initState();
+    print("--- LocationPermition");
     init();
   }
 
@@ -33,15 +35,15 @@ class LocationPermissionScreenState extends State<LocationPermissionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false),
+      appBar: AppBar(automaticallyImplyLeading: false,backgroundColor: GoRideColors.yellow),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Lottie.asset('images/location-permissions.json', height: 200, width: 200, fit: BoxFit.cover),
+              Lottie.asset('assets/images/location-permissions.json', height: 200, width: 200, fit: BoxFit.cover),
               SizedBox(height: 32),
               Text(language.mostReliableMightyRiderApp, style: boldTextStyle(size: 18)),
               SizedBox(height: 16),

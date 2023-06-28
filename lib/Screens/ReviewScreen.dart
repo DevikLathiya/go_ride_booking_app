@@ -45,6 +45,7 @@ class ReviewScreenState extends State<ReviewScreen> {
   @override
   void initState() {
     super.initState();
+    print("--- review");
     init();
   }
 

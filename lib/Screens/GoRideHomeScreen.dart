@@ -5,6 +5,7 @@ import 'package:cabuser/Screens/LocationPermissionScreen.dart';
 import 'package:cabuser/Screens/NewEstimateRideListWidget.dart';
 import 'package:cabuser/Screens/ReviewScreen.dart';
 import 'package:cabuser/utils/Constants.dart';
+import 'package:cabuser/utils/Extensions/StringExtensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -59,6 +60,7 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
   List<LatLng> polylineCoordinates = [];
   late PolylinePoints polylinePoints;
   OnRideRequest? servicesListData;
+  late StreamSubscription<ServiceStatus> serviceStatusStream;
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(23.242001, 69.666931),
@@ -71,8 +73,9 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
         Navigator.push(context, MaterialPageRoute(builder: (_) => LocationPermissionScreen()));
       });
       sourceLocation = LatLng(geoPosition.latitude, geoPosition.longitude);
+      print("sourceLocation : $sourceLocation");
       List<Placemark>? placemarks = await placemarkFromCoordinates(geoPosition.latitude, geoPosition.longitude);
-      sharedPref.setString(COUNTRY, placemarks[0].isoCountryCode.validate(value: defaultCountry));
+      sharedPref.setString(COUNTRY, placemarks[0].isoCountryCode!.validate(value: defaultCountry));
 
       Placemark place = placemarks[0];
       if (place != null) {
@@ -193,6 +196,22 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
     });
   }
 
+  Future<void> locationPermission() async {
+    serviceStatusStream = Geolocator.getServiceStatusStream().listen((ServiceStatus status) {
+      if (status == ServiceStatus.disabled) {
+        launchScreen(navigatorKey.currentState!.overlay!.context, LocationPermissionScreen());
+      } else if (status == ServiceStatus.enabled) {
+        getCurrentUserLocation();
+
+        if (Navigator.canPop(navigatorKey.currentState!.overlay!.context)) {
+          Navigator.pop(navigatorKey.currentState!.overlay!.context);
+        }
+      }
+    }, onError: (error) {
+      //
+    });
+  }
+
   final Set<Marker> _markers = {
     Marker(
         markerId: MarkerId("1"),
@@ -232,6 +251,7 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
   @override
   void initState() {
     super.initState();
+    locationPermission();
     _animationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 2000));
     afterBuildCreated(() {
@@ -400,7 +420,7 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
   bool check = false;
   late GoogleMapController mapController;
   final List<Polyline> _polyLine = [];
-  Set<Polyline> _polyLines = Set<Polyline>();
+  Set<Polyline> _MypolyLines = Set<Polyline>();
   GoogleMapController? controller;
 
   Widget mapImageShow() {
@@ -418,29 +438,31 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
         LatLng(23.199090, 69.645000),
       ],
     ));
-    return Stack(children: [
+    return /* sourceLocation != null
+        ?  */Stack(children: [
       SizedBox(
           height: MediaQuery.of(context).size.height * .65,
           child: ClipRRect(
             borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
             child: GoogleMap(
-              initialCameraPosition:  CameraPosition(
+              initialCameraPosition: _kGooglePlex/* CameraPosition(
                 target: sourceLocation!,
                 zoom: cameraZoom,
                 tilt: cameraTilt,
                 bearing: cameraBearing,
-              ), //_kGooglePlex,
+              )*/, //_kGooglePlex,
               mapType: MapType.normal,
               markers: markers.map((e) => e).toSet(),//_markers,
               zoomControlsEnabled: false,
               compassEnabled: check,
               mapToolbarEnabled: check,
-              polylines: _polyLines,
-              //polylines:_polyLine.toSet() ,
-              onMapCreated: (GoogleMapController controller) {
+              // polylines: _MypolyLines,
+              polylines:_polyLine.toSet() ,
+             /* onMapCreated: (GoogleMapController controller) {
                 mapController = controller;
                 _controller.complete(controller);
-              },
+              },*/
+              myLocationEnabled: true,
             ),
           )),
       Container(
@@ -449,7 +471,7 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
               top: MediaQuery.of(context).size.height * .57, right: 30),
           child: FloatingActionButton(
             onPressed: () {
-              setState(() {
+              setState(() async {
                 check = !check;
                 print(check);
                 /* mapController.animateCamera(
@@ -462,6 +484,17 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
                       ),
                     ),
                   );*/
+
+                LocationPermission permission;
+                permission = await Geolocator.requestPermission();
+
+                Position position = await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.high);
+                double lat = position.latitude;
+                double long = position.longitude;
+
+                  sourceLocation = LatLng(lat, long);
+
               });
             },
             backgroundColor: GoRideColors.yellow,
@@ -471,9 +504,11 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
               GoRideConstant.getSvgImagePath("add.location.svg"),
               color: GoRideColors.white,
             ),
-          ))
-    ]);
+          )),
+
+    ]); /*: loaderWidget();*/
   }
+
 
   /*  Stack(
       children: [
@@ -649,7 +684,7 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
                           ],
                         ),
                         SizedBox(
-                          width: 20,
+                          width: 18,
                         ),
                       ],
                     ),
