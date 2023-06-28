@@ -149,7 +149,7 @@ class SettingScreenState extends State<SettingScreen> {
                             Visibility(
                               visible: sharedPref.getString(LOGIN_TYPE) != 'mobile' && sharedPref.getString(LOGIN_TYPE) != LoginTypeGoogle && sharedPref.getString(LOGIN_TYPE) != null,
                               child: settingItemWidget(Icons.lock_outline, language.changePassword, () {
-                                launchScreen(context, GoRideNewPwd(), pageRouteAnimation: PageRouteAnimation.Slide);
+                                launchScreen(context, ChangePasswordScreen(), pageRouteAnimation: PageRouteAnimation.Slide);
                               }),
                             ),
                             settingItemWidget(Icons.language, language.language, () {
