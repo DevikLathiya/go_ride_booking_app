@@ -116,4 +116,7 @@ class GoRideStringRes {
   static const DeleteAccount = "Delete Account";
   static const EmergencyContact = "Emergency Contact";
   static const Setting = "Setting";
+  static const PrivacyPolicy = "Privacy Policy";
+  static const Terms$Condition = "Terms & Condition";
+
 }
