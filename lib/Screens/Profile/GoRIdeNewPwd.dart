@@ -12,6 +12,7 @@ class GoRideNewPwd extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
+
     return GoRideNewPwdState();
   }
 }

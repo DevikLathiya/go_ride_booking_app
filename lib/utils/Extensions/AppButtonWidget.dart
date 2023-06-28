@@ -112,6 +112,7 @@ class _AppButtonWidgetState extends State<AppButtonWidget>
       child: ClipRRect(
         borderRadius: radius(),
         child: MaterialButton(
+
           minWidth: widget.width,
           padding: widget.padding ?? dynamicAppButtonPadding(context),
           onPressed: widget.enabled.validate(value: true)

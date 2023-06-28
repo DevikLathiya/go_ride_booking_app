@@ -126,7 +126,7 @@ class GoRideMyTripsState extends State<GoRideMyTrips> {
                               borderRadius: BorderRadius.circular(10),
                               color: GoRideColors.yellow),
                           tabs: const [
-                            Tab(text: "Upcoming"),
+                            // Tab(text: "Upcoming"),
                             Tab(text: "Completed"),
                             Tab(text: "Canceled"),
                           ],
@@ -134,7 +134,9 @@ class GoRideMyTripsState extends State<GoRideMyTrips> {
                       ),
                       Expanded(
                         child: TabBarView(
-                            children: [upcoming(), completed(), canceled()]),
+                            children: [
+                              // upcoming(),
+                              completed(), canceled()]),
                       )
                     ])))));
   }

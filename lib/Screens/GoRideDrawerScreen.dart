@@ -1,3 +1,7 @@
+import 'package:cabuser/Screens/BankInfoScreen.dart';
+import 'package:cabuser/Screens/EmergencyContactScreen.dart';
+import 'package:cabuser/Screens/SettingScreen.dart';
+import 'package:cabuser/Screens/wallet.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,27 +30,32 @@ class _DrawerScreenState extends State<DrawerScreen> {
     {
       'id': 1,
       'icon': GoRideConstant.getSvgImagePath("me.home.svg"),
-      'title': 'Home'
+      'title': 'My Profile'
     },
     {
       'id': 2,
       'icon': GoRideConstant.getSvgImagePath("me.my_trip.svg"),
-      'title': 'My Trip'
+      'title': 'My Ride'
     },
     {
       'id': 3,
       'icon': GoRideConstant.getSvgImagePath("me.address.svg"),
-      'title': 'Address'
+      'title': 'My Wallet'
     },
     {
       'id': 4,
       'icon': GoRideConstant.getSvgImagePath("me.payment.svg"),
-      'title': 'Payment'
+      'title': 'Bank info'
     },
     {
       'id': 5,
       'icon': GoRideConstant.getSvgImagePath("me.book_later.svg"),
-      'title': 'Book Later'
+      'title': 'Emergency Contact'
+    },
+    {
+      'id': 6,
+      'icon': GoRideConstant.getSvgImagePath("me.book_later.svg"),
+      'title': 'Setting'
     },
   ];
   @override
@@ -157,7 +166,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        HomePage(),
+                                        GoRideEditProfileShow(),
                                   ),
                                 );
                               } else if (element["id"] == 2) {
@@ -173,7 +182,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        GoRideMyAddress(),
+                                        MyWalletScreen(),
                                   ),
                                 );
                               } else if (element["id"] == 4) {
@@ -181,7 +190,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        GoRidePaymentMethod(),
+                                        BankInfoScreen(),
                                   ),
                                 );
                               } else if (element["id"] == 5) {
@@ -189,7 +198,15 @@ class _DrawerScreenState extends State<DrawerScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        GoRideBookLater(),
+                                        EmergencyContactScreen(),
+                                  ),
+                                );
+                              }else if (element["id"] == 6) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        SettingScreen(),
                                   ),
                                 );
                               }

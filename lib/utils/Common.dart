@@ -161,7 +161,7 @@ String printDate(String date) {
 }
 
 Widget emptyWidget() {
-  return Center(child: Image.asset('images/no_data.png', width: 150, height: 250));
+  return Center(child: Image.asset('assets/images/no_data.png', width: 150, height: 550));
 }
 
 Future<void> saveOneSignalPlayerId() async {

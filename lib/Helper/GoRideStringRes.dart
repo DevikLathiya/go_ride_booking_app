@@ -106,4 +106,9 @@ class GoRideStringRes {
   static const BookLater = "Book Later";
   static const selectShe = "Select your schedule";
   static const MyTrips = "My Trips";
+  static const MyWallet = "My Wallet";
+  static const MyPayment = "Payment";
+  static const MyBankinfo = "Bank info";
+  static const EmergencyContact = "Emergency Contact";
+  static const Setting = "Setting";
 }
