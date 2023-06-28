@@ -73,15 +73,14 @@ class GoRideSplashScreenState extends State<GoRideSplashScreen>
   }
 
   void navigationPage() {
-    if (sharedPref.getBool(IS_FIRST_TIME) ?? true) {
+    if (sharedPref.getBool(IS_FIRST_TIME) == false) {
       print("IS_FIRST_TIME : $IS_FIRST_TIME");
       launchScreen(context, GopRideWelcomeScreen(), pageRouteAnimation: PageRouteAnimation.Slide);
     } else {
-      if (!appStore.isLoggedIn) {
-        print("isLoggedIn");
+      if (sharedPref.getBool(IS_FIRST_TIME) == false) {
         launchScreen(context, GoRideLoginScreen(), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
       } else {
-        if (sharedPref.getString(CONTACT_NUMBER)!.validate().isEmptyOrNull) {
+       /* if (sharedPref.getString(CONTACT_NUMBER)!.validate().isEmptyOrNull) {
           toast("open edit profile screen");
           // launchScreen(context, EditProfileScreen(isGoogle: true), isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
         } else if (sharedPref.getString(UID).validate().isEmptyOrNull) {
@@ -90,7 +89,8 @@ class GoRideSplashScreenState extends State<GoRideSplashScreen>
           });
         } else {
           launchScreen(context, GoRideHomeScreen(), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
-        }
+        }*/
+        launchScreen(context, GoRideHomeScreen(), pageRouteAnimation: PageRouteAnimation.Slide, isNewTask: true);
       }
     }
     // Navigator.pushReplacement(

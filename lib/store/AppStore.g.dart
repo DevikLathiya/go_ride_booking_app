@@ -405,8 +405,7 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   Future<void> setUserEmail(String val, {bool isInitialization = false}) {
-    return _$setUserEmailAsyncAction
-        .run(() => super.setUserEmail(val, isInitialization: isInitialization));
+    return _$setUserEmailAsyncAction.run(() => super.setUserEmail(val, isInitialization: isInitialization));
   }
 
   late final _$setUserIdAsyncAction =

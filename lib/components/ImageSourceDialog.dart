@@ -65,7 +65,7 @@ class _ImageSourceDialogState extends State<ImageSourceDialog> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(ic_camera, height: 30, width: 30, fit: BoxFit.cover),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(language.camera, style: boldTextStyle()),
                       ],
                     ),

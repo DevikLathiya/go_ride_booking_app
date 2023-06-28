@@ -9,6 +9,8 @@ import 'package:octo_image/octo_image.dart';
 import 'package:cabuser/Helper/GoRIdeConstant.dart';
 import 'package:cabuser/Helper/GoRideColor.dart';
 
+import '../main.dart';
+import '../utils/Constants.dart';
 import 'Address/GoRideMyAddress.dart';
 import 'GoRideBookLater.dart';
 import 'GoRideDrawerHome.dart';
@@ -231,6 +233,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
           ),
           GestureDetector(
             onTap: () {
+              sharedPref.setBool(IS_FIRST_TIME,false);
+              sharedPref.setBool(IS_LOGGED_IN,false);
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

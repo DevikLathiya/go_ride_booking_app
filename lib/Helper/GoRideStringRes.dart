@@ -87,6 +87,8 @@ class GoRideStringRes {
   static const Address = "Address";
   static const SaveProfile = "SAVE PROFILE";
   static const FullName = "Full Name";
+  static const firstName = "First Name";
+  static const lastName = "Last Name";
   static const EmailID = "Email ID";
   static const PhoneNumber = "Phone Number";
   static const Male = "Male";
