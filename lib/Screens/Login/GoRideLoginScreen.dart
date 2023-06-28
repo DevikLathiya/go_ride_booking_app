@@ -530,7 +530,7 @@ class GoRideLoginScreenState extends State<GoRideLoginScreen>
                 email: emailController.text, password: passController.text)
             .then((value) {
           sharedPref.setString(UID, value.user!.uid);
-          sharedPref.setBool(IS_FIRST_TIME,true);
+          // sharedPref.setBool(IS_FIRST_TIME,true);
           updateProfileUid();
           launchScreen(context, GoRideHomeScreen(),
               isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
