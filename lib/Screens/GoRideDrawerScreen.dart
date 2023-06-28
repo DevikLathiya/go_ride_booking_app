@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:cabuser/Screens/BankInfoScreen.dart';
 import 'package:cabuser/Screens/EmergencyContactScreen.dart';
 import 'package:cabuser/Screens/SettingScreen.dart';
 import 'package:cabuser/Screens/wallet.dart';
+import 'package:cabuser/network/RestApis.dart';
+import 'package:cabuser/utils/Extensions/StringExtensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,6 +64,26 @@ class _DrawerScreenState extends State<DrawerScreen> {
       'title': 'Setting'
     },
   ];
+  String userName="";
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() async {
+    appStore.setLoading(true);
+    getUserDetail(userId: sharedPref.getInt(USER_ID)).then((value) {
+      userName = value.data!.username.validate();
+
+      appStore.setLoading(false);
+      setState(() {});
+    }).catchError((error) {
+      log(error.toString());
+      appStore.setLoading(false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -137,9 +161,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children:  [
                     Text(
-                      'Jay',
+                      '$userName',
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
                     SizedBox(

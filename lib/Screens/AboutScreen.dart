@@ -105,7 +105,7 @@ class AboutScreenState extends State<AboutScreen> {
                       top: MediaQuery.of(context).size.height * .05,
                     ),
                     child: Text(
-                      GoRideStringRes.MyBankinfo,
+                      GoRideStringRes.AboutUs,
                       style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.w600),
                     ),

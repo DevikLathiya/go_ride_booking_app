@@ -111,6 +111,7 @@ class GoRideStringRes {
   static const MyWallet = "My Wallet";
   static const MyPayment = "Payment";
   static const MyBankinfo = "Bank info";
+  static const AboutUs = "About Us";
   static const EmergencyContact = "Emergency Contact";
   static const Setting = "Setting";
 }

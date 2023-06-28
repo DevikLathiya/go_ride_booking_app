@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cabuser/Screens/ChangePasswordScreen.dart';
 import 'package:cabuser/main.dart';
 import 'package:cabuser/utils/Common.dart';
 import 'package:cabuser/utils/Constants.dart';
@@ -357,7 +358,7 @@ class GoRideEditProfileShowState extends State<GoRideEditProfileShow> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (BuildContext context) => GoRideNewPwd(),
+                                builder: (BuildContext context) => ChangePasswordScreen(),
                               ),
                             );
                           },
@@ -410,7 +411,7 @@ class GoRideEditProfileShowState extends State<GoRideEditProfileShow> {
                           },
                           child: Padding(
                               padding: EdgeInsets.only(
-                                  right: MediaQuery.of(context).size.width * .1),
+                                  right: MediaQuery.of(context).size.width * .08),
                               child: SvgPicture.asset(
                                   GoRideConstant.getSvgImagePath(
                                       "pro.right_arrow.svg"))),
