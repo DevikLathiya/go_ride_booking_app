@@ -1,6 +1,9 @@
 // ignore_for_file: unnecessary_import
 
+import 'dart:developer';
+
 import 'package:cabuser/Screens/Profile/GoRideEditProfileShowData.dart';
+import 'package:cabuser/utils/Extensions/StringExtensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,6 +13,9 @@ import 'package:cabuser/Helper/GoRideColor.dart';
 import 'package:cabuser/Helper/GoRideStringRes.dart';
 import 'package:cabuser/Screens/Widget/slideAnimation.dart';
 
+import '../../main.dart';
+import '../../network/RestApis.dart';
+import '../../utils/Constants.dart';
 import '../GoRideDrawerHome.dart';
 import '../GoRideHomeScreen.dart';
 import 'GoRideAddNewAddress.dart';
@@ -32,6 +38,25 @@ class GoRideMyAddressState extends State<GoRideMyAddress>
     super.initState();
     _animationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 2000));
+    init();
+  }
+ String Address="";
+  String userName="";
+
+  void init() async {
+    appStore.setLoading(true);
+    getUserDetail(userId: sharedPref.getInt(USER_ID)).then((value) {
+      userName = value.data!.username.validate();
+
+      Address = value.data!.address.validate();
+      Address =  sharedPref.getString(USER_ADDRESS)!;
+    print("Address:: $Address");
+      appStore.setLoading(false);
+      setState(() {});
+    }).catchError((error) {
+      log(error.toString());
+      appStore.setLoading(false);
+    });
   }
 
   @override
@@ -121,8 +146,8 @@ class GoRideMyAddressState extends State<GoRideMyAddress>
                     animationController: _animationController,
                     child: Column(children: [
                       firstAddress(),
-                      secondAddress(),
-                      thirdAddress(),
+                    /*  secondAddress(),
+                      thirdAddress(),*/
                       SizedBox(
                         height: MediaQuery.of(context).size.height * .09,
                       ),
@@ -161,7 +186,7 @@ class GoRideMyAddressState extends State<GoRideMyAddress>
         });
       },
       child: Container(
-          height: MediaQuery.of(context).size.height * .21,
+          height: MediaQuery.of(context).size.height * .15,
           //  padding: EdgeInsets.only(top: 10,left: 30,right: 30),
           margin: EdgeInsets.only(
             top: 10, /*left: 20,right: 30*/
@@ -184,7 +209,7 @@ class GoRideMyAddressState extends State<GoRideMyAddress>
                   Container(
                       padding: EdgeInsets.only(left: 40),
                       child: Text(
-                        "Divy Jani",
+                        userName,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w600),
                       )),
@@ -192,10 +217,11 @@ class GoRideMyAddressState extends State<GoRideMyAddress>
                     padding: EdgeInsets.only(left: 20),
                     child: ElevatedButton(
                       onPressed: () {
+
                         //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GoRidePaymentMethod(),),);
                       },
                       child: Text(
-                        "Home",
+                        sharedPref.getString(ADDRESS_TYPE)?? "Home",
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: GoRideColors.black,
@@ -226,7 +252,7 @@ class GoRideMyAddressState extends State<GoRideMyAddress>
                     margin: EdgeInsets.only(right: 10, left: 10),
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "Nr Hotel Vrinadavan, Hari Niwas Circle, Opp Manalisa Blg, Thane (west)",
+                      Address,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           fontSize: 14,
@@ -236,7 +262,7 @@ class GoRideMyAddressState extends State<GoRideMyAddress>
                   ),
                 ],
               ),
-              Row(
+            /*  Row(
                 children: [
                   Container(
                     margin: EdgeInsets.only(left: 50, top: 10),
@@ -284,7 +310,7 @@ class GoRideMyAddressState extends State<GoRideMyAddress>
                             GoRideConstant.getSvgImagePath("delete_icon.svg")),
                       )),
                 ],
-              )
+              )*/
             ],
           )),
     );

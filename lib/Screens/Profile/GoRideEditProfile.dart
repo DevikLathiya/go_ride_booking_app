@@ -271,11 +271,10 @@ class GoRideEditProfileState extends State<GoRideEditProfile> {
           },
           decoration: InputDecoration(
             contentPadding: EdgeInsets.zero,
-            hintText: "Divy M. Jani",
+            hintText: "Enter Full name",
             hintStyle: TextStyle(
                 color: GoRideColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
+                fontSize: 16),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xffa2a2a2)),
             ),
@@ -298,11 +297,10 @@ class GoRideEditProfileState extends State<GoRideEditProfile> {
           controller: firstNameController,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.zero,
-            hintText: "Divy",
+            hintText: "Enter First Name",
             hintStyle: TextStyle(
                 color: GoRideColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
+                fontSize: 16),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xffa2a2a2)),
             ),
@@ -325,11 +323,10 @@ class GoRideEditProfileState extends State<GoRideEditProfile> {
           controller: lastNameController,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.zero,
-            hintText: "Jani",
+            hintText: "Enter Last Name",
             hintStyle: TextStyle(
                 color: GoRideColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
+                fontSize: 16),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xffa2a2a2)),
             ),
@@ -357,11 +354,10 @@ class GoRideEditProfileState extends State<GoRideEditProfile> {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.zero,
-            hintText: "abcd2021@gmail.com",
+            hintText: "Enter Email",
             hintStyle: TextStyle(
                 color: GoRideColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
+                fontSize: 16),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xffa2a2a2)),
             ),
@@ -389,11 +385,10 @@ class GoRideEditProfileState extends State<GoRideEditProfile> {
           },
           decoration: InputDecoration(
             contentPadding: EdgeInsets.zero,
-            hintText: "0123456789",
+            hintText: "Enter Mobile",
             hintStyle: TextStyle(
                 color: GoRideColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
+                fontSize: 16),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xffa2a2a2)),
             ),

@@ -1,5 +1,9 @@
 // ignore_for_file: unnecessary_import
 
+import 'package:cabuser/Screens/Address/GoRideMyAddress.dart';
+import 'package:cabuser/main.dart';
+import 'package:cabuser/utils/Common.dart';
+import 'package:cabuser/utils/Extensions/app_common.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,6 +13,8 @@ import 'package:cabuser/Helper/GoRideStringRes.dart';
 import 'package:cabuser/Screens/Widget/AppBar.dart';
 import 'package:cabuser/Screens/Widget/animatedFadeAnimation.dart';
 
+import '../../network/RestApis.dart';
+import '../../utils/Constants.dart';
 import '../GoRideDrawerHome.dart';
 import '../GoRideHomeScreen.dart';
 
@@ -23,6 +29,15 @@ class GoRideAddNewAddress extends StatefulWidget {
 
 class GoRideAddNewAddressState extends State<GoRideAddNewAddress> {
   bool a = true, b = false, c = false, d = false;
+  TextEditingController pincode = TextEditingController();
+  TextEditingController state = TextEditingController();
+  TextEditingController city = TextEditingController();
+  TextEditingController houseNo = TextEditingController();
+  TextEditingController streetName = TextEditingController();
+
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,54 +60,57 @@ class GoRideAddNewAddressState extends State<GoRideAddNewAddress> {
                 right: MediaQuery.of(context).size.width * .1),
             decoration: GoRideConstant.boxDecorationContainer(
                 GoRideColors.white, false),
-            child: Column(children: [
-              AnimatedFadeAnimation(
-                  1,
-                  Container(
-                    padding: EdgeInsets.only(top: 20),
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      GoRideStringRes.typeAdd,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                  )),
-              AnimatedFadeAnimation(1.3, addressList()),
-              AnimatedFadeAnimation(1.6, pinCOdeAndLocation()),
-              AnimatedFadeAnimation(1.9, stateAndCity()),
-              AnimatedFadeAnimation(
-                  1.12,
-                  Container(
+            child: Form(
+              key: _formKey,
+              child: Column(children: [
+                AnimatedFadeAnimation(
+                    1,
+                    Container(
+                      padding: EdgeInsets.only(top: 20),
                       alignment: Alignment.topLeft,
-                      padding: EdgeInsets.only(top: 10),
                       child: Text(
-                        GoRideStringRes.houseNo,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: Color(0xffababab),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
-                      ))),
-              SizedBox(
-                height: 10,
-              ),
-              AnimatedFadeAnimation(1.12, houseNoEnter()),
-              AnimatedFadeAnimation(
-                  1.15,
-                  Container(
-                      alignment: Alignment.topLeft,
-                      padding: EdgeInsets.only(top: 10),
-                      child: Text(
-                        GoRideStringRes.StreetName,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            color: Color(0xffababab),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
-                      ))),
-              AnimatedFadeAnimation(1.15, streetNameEnter()),
-              AnimatedFadeAnimation(1.30, saveAddBtn())
-            ])));
+                        GoRideStringRes.typeAdd,
+                        style:
+                            TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                    )),
+                AnimatedFadeAnimation(1.3, addressList()),
+                AnimatedFadeAnimation(1.6, pinCOdeAndLocation()),
+                AnimatedFadeAnimation(1.9, stateAndCity()),
+                AnimatedFadeAnimation(
+                    1.12,
+                    Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(
+                          GoRideStringRes.houseNo,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: Color(0xffababab),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ))),
+                SizedBox(
+                  height: 10,
+                ),
+                AnimatedFadeAnimation(1.12, houseNoEnter()),
+                AnimatedFadeAnimation(
+                    1.15,
+                    Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(
+                          GoRideStringRes.StreetName,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: Color(0xffababab),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ))),
+                AnimatedFadeAnimation(1.15, streetNameEnter()),
+                AnimatedFadeAnimation(1.30, saveAddBtn())
+              ]),
+            )));
   }
 
   Widget addressList() {
@@ -223,7 +241,7 @@ class GoRideAddNewAddressState extends State<GoRideAddNewAddress> {
                   primary: d ? Color(0xfffcf8e5) : GoRideColors.white,
                   side: BorderSide(
                     width: 1.0,
-                    color: a ? GoRideColors.yellow : Colors.black,
+                    color: d ? GoRideColors.yellow : Colors.black,
                   ),
                 ),
                 icon: SvgPicture.asset(
@@ -257,13 +275,13 @@ class GoRideAddNewAddressState extends State<GoRideAddNewAddress> {
                       )),
                   TextFormField(
                       cursorColor: Color(0xffa2a2a2),
+                      controller: pincode,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
-                        hintText: "400068",
+                        hintText: "Enter Pincode",
                         hintStyle: TextStyle(
                             color: GoRideColors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
+                            fontSize: 16),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xffababab)),
                         ),
@@ -325,13 +343,13 @@ class GoRideAddNewAddressState extends State<GoRideAddNewAddress> {
                       )),
                   TextFormField(
                       cursorColor: Color(0xffa2a2a2),
+                      controller: state,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
-                        hintText: "Maharashtra",
+                        hintText: "Enter State",
                         hintStyle: TextStyle(
                             color: GoRideColors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600),
+                            fontSize: 16),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xffababab)),
                         ),
@@ -365,13 +383,13 @@ class GoRideAddNewAddressState extends State<GoRideAddNewAddress> {
                     ),
                     child: TextFormField(
                         cursorColor: Color(0xffa2a2a2),
+                        controller: city,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.zero,
-                          hintText: "Mumbai",
+                          hintText: "Enter City",
                           hintStyle: TextStyle(
                               color: GoRideColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
+                              fontSize: 16),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffababab)),
                           ),
@@ -393,13 +411,13 @@ class GoRideAddNewAddressState extends State<GoRideAddNewAddress> {
       // padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*.05,right:MediaQuery.of(context).size.width*.08,),
       child: TextFormField(
           cursorColor: Color(0xffa2a2a2),
+          controller: houseNo,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.zero,
-            hintText: "C - 116, Ambaa Nivas ",
+            hintText: "Enter House No & Society ",
             hintStyle: TextStyle(
                 color: GoRideColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
+                fontSize: 16),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xffa2a2a2)),
             ),
@@ -416,13 +434,13 @@ class GoRideAddNewAddressState extends State<GoRideAddNewAddress> {
       // padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*.05,right:MediaQuery.of(context).size.width*.08,),
       child: TextFormField(
           cursorColor: Color(0xffa2a2a2),
+          controller: streetName,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.zero,
-            hintText: "Y.r. Tawde Road, S V Road, Dahisar ",
+            hintText: "Enter Street name ",
             hintStyle: TextStyle(
                 color: GoRideColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
+                fontSize: 16),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xffa2a2a2)),
             ),
@@ -438,17 +456,42 @@ class GoRideAddNewAddressState extends State<GoRideAddNewAddress> {
       alignment: Alignment.center,
       padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * .18),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
+          String Address= "${houseNo.text},${streetName.text},${city.text},${streetName.text},${state.text},${pincode.text}";
+          print("Address : $Address");
           xOffset = 0;
           yOffset = 0;
           scaleFactor = 1;
           isDrawerOpen = false;
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => HomePage(),
-            ),
-          );
+          String type='';
+          (a) ? type = "Home" : null;
+          (b) ? type = "Work" : null;
+          (c) ? type = "Coffee" : null;
+          (d) ? type = "Shopping" : null;
+
+          hideKeyboard(context);
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            appStore.setLoading(true);
+            await updateProfile(
+              uid: sharedPref.getString(UID).toString(),
+              address: Address,
+            ).then((value) {
+              appStore.setLoading(false);
+              toast(language.profileUpdateMsg);
+              Navigator.pushReplacement(
+                context, MaterialPageRoute(
+                  builder: (BuildContext context) => GoRideMyAddress(),
+                ),
+              );
+            }).catchError((error) {
+              appStore.setLoading(false);
+              log(error.toString());
+            });
+          }
+          sharedPref.setString(USER_ADDRESS, Address);
+          sharedPref.setString(ADDRESS_TYPE, type);
+
         },
         child: Text(
           GoRideStringRes.SaveAddress,

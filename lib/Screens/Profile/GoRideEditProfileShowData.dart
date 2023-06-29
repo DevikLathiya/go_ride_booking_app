@@ -91,7 +91,7 @@ class GoRideEditProfileShowState extends State<GoRideEditProfileShow> {
       usernameController.text = value.data!.username.validate();
       firstNameController.text = value.data!.firstName.validate();
       lastNameController.text = value.data!.lastName.validate();
-      addressController.text = value.data!.address.validate();
+      addressController.text =  sharedPref.getString(USER_ADDRESS)!;
       contactNumberController.text = value.data!.contactNumber.validate();
       // Gender=value.data!.gender.validate();
       Gender = sharedPref.getString(GENDER) ?? "Male";

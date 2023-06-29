@@ -91,7 +91,7 @@ String getTitle(DialogType dialogType) {
   return titleText;
 }
 
-Widget getIcon(DialogType dialogType, {double? size}) {
+Widget getIcon(DialogType dialogType, {double? size,Color? Icolor}) {
   Icon icon;
 
   switch (dialogType) {
@@ -101,7 +101,7 @@ Widget getIcon(DialogType dialogType, {double? size}) {
       icon = Icon(Icons.done, size: size ?? 20, color: Colors.white);
       break;
     case DialogType.DELETE:
-      icon = Icon(Icons.delete_forever_outlined, size: size ?? 20, color: Colors.white);
+      icon = Icon(Icons.delete_forever_outlined, size: size ?? 20, color:Icolor ?? Colors.white);
       break;
     case DialogType.UPDATE:
       icon = Icon(Icons.edit, size: size ?? 20, color: Colors.white);
@@ -366,7 +366,7 @@ Future<bool?> showConfirmDialogCustom(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              getIcon(dialogType),
+                              getIcon(dialogType,Icolor: Colors.black),
                               SizedBox(width: 6),
                               Text(
                                 positiveText ?? getPositiveText(dialogType),

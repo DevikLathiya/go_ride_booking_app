@@ -83,7 +83,7 @@ class TermsConditionScreenState extends State<TermsConditionScreen> {
                   top: MediaQuery.of(context).size.height * .05,
                 ),
                 child: Text(
-                  GoRideStringRes.Terms$Condition,
+                  widget.title.toString(),
                   style: TextStyle(
                       fontSize: 18, fontWeight: FontWeight.w600),
                 ),

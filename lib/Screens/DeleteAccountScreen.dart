@@ -132,6 +132,7 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen> {
                                     dialogType: DialogType.DELETE,
                                     positiveText: language.yes,
                                     negativeText: language.no,
+                                    primaryColor: Colors.yellow,
                                     onAccept: (c) async {
                                       if (sharedPref.getString(USER_EMAIL) == demoEmail) {
                                         toast(language.demoMsg);

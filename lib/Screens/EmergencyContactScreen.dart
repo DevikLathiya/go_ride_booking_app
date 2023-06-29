@@ -217,9 +217,11 @@ class EmergencyContactScreenState extends State<EmergencyContactScreen> {
                                       if (contactNumber[index].regionId == null)
                                         inkWellWidget(
                                           onTap: () async {
-                                            showConfirmDialogCustom(context, title: language.areYouSureYouWantDeleteThisNumber, positiveText: language.yes, negativeText: language.no, dialogType: DialogType.DELETE, onAccept: (c) async {
+                                            showConfirmDialogCustom(context, title: language.areYouSureYouWantDeleteThisNumber,
+                                                positiveText: language.yes, negativeText: language.no, dialogType: DialogType.DELETE,
+                                                onAccept: (c) async {
                                               await delete(id: contactNumber[index].id!);
-                                            }, primaryColor: primaryColor);
+                                            }, primaryColor: Colors.yellow);
                                           },
                                           child: Icon(MaterialIcons.delete_outline, color: primaryColor),
                                         )
