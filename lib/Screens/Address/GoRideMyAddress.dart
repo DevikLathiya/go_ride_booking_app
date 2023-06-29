@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_import
 
+import 'package:cabuser/Screens/Profile/GoRideEditProfileShowData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -76,7 +77,7 @@ class GoRideMyAddressState extends State<GoRideMyAddress>
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomePage()));
+                                    builder: (context) => GoRideEditProfileShow()));
                           },
                           mini: true,
                           backgroundColor: GoRideColors.white,

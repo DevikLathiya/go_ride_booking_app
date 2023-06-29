@@ -6,6 +6,7 @@ import 'package:cabuser/Screens/SettingScreen.dart';
 import 'package:cabuser/Screens/wallet.dart';
 import 'package:cabuser/network/RestApis.dart';
 import 'package:cabuser/utils/Extensions/StringExtensions.dart';
+import 'package:cabuser/utils/Extensions/app_common.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,7 +15,9 @@ import 'package:cabuser/Helper/GoRIdeConstant.dart';
 import 'package:cabuser/Helper/GoRideColor.dart';
 
 import '../main.dart';
+import '../utils/Common.dart';
 import '../utils/Constants.dart';
+import '../utils/images.dart';
 import 'Address/GoRideMyAddress.dart';
 import 'GoRideBookLater.dart';
 import 'GoRideDrawerHome.dart';
@@ -35,32 +38,32 @@ class _DrawerScreenState extends State<DrawerScreen> {
   List<Map> drawerItems = [
     {
       'id': 1,
-      'icon': GoRideConstant.getSvgImagePath("me.home.svg"),
+      'icon': ic_my_profile,//GoRideConstant.getSvgImagePath("me.home.svg"),
       'title': 'My Profile'
     },
     {
       'id': 2,
-      'icon': GoRideConstant.getSvgImagePath("me.my_trip.svg"),
+      'icon': ic_my_rides,//GoRideConstant.getSvgImagePath("me.my_trip.svg"),
       'title': 'My Ride'
     },
     {
       'id': 3,
-      'icon': GoRideConstant.getSvgImagePath("me.address.svg"),
+      'icon': ic_my_wallet,//GoRideConstant.getSvgImagePath("me.address.svg"),
       'title': 'My Wallet'
     },
     {
       'id': 4,
-      'icon': GoRideConstant.getSvgImagePath("me.payment.svg"),
+      'icon': ic_update_bank_info,//GoRideConstant.getSvgImagePath("me.payment.svg"),
       'title': 'Bank info'
     },
     {
       'id': 5,
-      'icon': GoRideConstant.getSvgImagePath("me.book_later.svg"),
+      'icon': ic_emergency_contact,//GoRideConstant.getSvgImagePath("me.book_later.svg"),
       'title': 'Emergency Contact'
     },
     {
       'id': 6,
-      'icon': GoRideConstant.getSvgImagePath("me.book_later.svg"),
+      'icon': ic_setting,//GoRideConstant.getSvgImagePath("me.book_later.svg"),
       'title': 'Setting'
     },
   ];
@@ -102,15 +105,18 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   children: [
                     Container(
                         // margin:EdgeInsets.only(top: MediaQuery.of(context).size.height*.015),
-                        height: MediaQuery.of(context).size.height * .17,
-                        width: MediaQuery.of(context).size.width * .17,
+                        height: MediaQuery.of(context).size.height * .08,
+                        width: MediaQuery.of(context).size.width * .18,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: Colors.white,
                               width: 2.0,
                             )),
-                        child: OctoImage(
+                        child: ClipOval(
+                          child: commonCachedNetworkImage(appStore.userProfile.validate(),fit: BoxFit.cover,height: 50)
+                        )
+                      /*OctoImage(
                           image: CachedNetworkImageProvider(
                               "https://firebasestorage.googleapis.com/v0/b/smartkit-8e62c.appspot.com/o/travelapp%2Fprofilepic.png?alt=media&token=af80c7e4-e14d-4645-b706-c651fb08116e"),
                           placeholderBuilder: OctoPlaceholder.blurHash(
@@ -118,10 +124,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           ),
                           errorBuilder: OctoError.icon(color: Colors.black),
                           fit: BoxFit.contain,
-                        )),
+                        )*/),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * .095,
+                          top: MediaQuery.of(context).size.height * .060,
                           left: MediaQuery.of(context).size.width * .1),
                       child: CircleAvatar(
                         radius: 13,
@@ -239,7 +245,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                             },
                             child: Row(
                               children: [
-                                SvgPicture.asset(
+                                Image.asset(
                                   element['icon'],
                                   color: Colors.black,
                                 ),

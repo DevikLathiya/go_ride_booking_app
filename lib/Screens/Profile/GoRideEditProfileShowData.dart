@@ -553,14 +553,14 @@ class GoRideEditProfileShowState extends State<GoRideEditProfileShow> {
                         onCamera: () async {
                           // Navigator.pop(context);
                           imageProfile = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 100);
-                          print("imageProfile : $imageProfile");
                           // Navigator.pop(context);
-                          // setState(() {});
+                          // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GoRideEditProfileShow(),));
+                           setState(() {});
                         },
                         onGallery: () async {
                           // Navigator.pop(context);
                           imageProfile = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 100);
-                          // setState(() {});
+                           setState(() {});
                         },
                       );
                     },

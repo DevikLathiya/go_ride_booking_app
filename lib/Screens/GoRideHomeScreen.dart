@@ -363,7 +363,7 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
                         backgroundColor: Colors.white,
                         radius: 22,
                         child: ClipOval(
-                            child: OctoImage(
+                            child: commonCachedNetworkImage(appStore.userProfile.validate(),fit: BoxFit.cover,height: 50,width: 70)/*OctoImage(
                           image: CachedNetworkImageProvider(
                               "https://firebasestorage.googleapis.com/v0/b/smartkit-8e62c.appspot.com/o/travelapp%2Fprofilepic.png?alt=media&token=af80c7e4-e14d-4645-b706-c651fb08116e"),
                           placeholderBuilder: OctoPlaceholder.blurHash(
@@ -374,7 +374,7 @@ class GoRideHomeScreenState extends State<GoRideHomeScreen>
                           fit: BoxFit.contain,
                           height: MediaQuery.of(context).size.height * .11,
                           width: MediaQuery.of(context).size.width * .11,
-                        )),
+                        )*/),
                       ),
                     ),
                   ), /*

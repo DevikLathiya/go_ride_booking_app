@@ -1,5 +1,6 @@
 import 'package:cabuser/Helper/GoRideColor.dart';
 import 'package:cabuser/Screens/GoRideDrawerHome.dart';
+import 'package:cabuser/Screens/SettingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../Helper/GoRIdeConstant.dart';
@@ -65,7 +66,7 @@ class LanguageScreenState extends State<LanguageScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => HomePage()));
+                              builder: (context) => SettingScreen()));
                     },
                     mini: true,
                     backgroundColor: GoRideColors.white,
@@ -118,8 +119,8 @@ class LanguageScreenState extends State<LanguageScreen> {
                       padding: EdgeInsets.all(16),
                       child: Row(
                         children: [
-                          Image.asset(data.flag.validate(), width: 34),
-                          SizedBox(width: 16),
+                          Image.asset("assets/${data.flag.validate()}", width: 34),
+                          const SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
