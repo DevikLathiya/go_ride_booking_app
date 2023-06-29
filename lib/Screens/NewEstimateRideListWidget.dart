@@ -527,79 +527,132 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: !isBooking
-                ? (isRideSelection == false && appStore.isRiderForAnother == "1" ? MediaQuery.of(context).size.height * 0.60 : MediaQuery.of(context).size.height * 0.43)
-                : MediaQuery.of(context).size.height * 0.5,
-            child: GoogleMap(
-              mapToolbarEnabled: false,
-              zoomControlsEnabled: false,
-              onMapCreated: onMapCreated,
-              initialCameraPosition: userCameraPosition,
-              markers: markers,
-              mapType: MapType.normal,
-              polylines: _polyLines,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: !isBooking
+                  ? (isRideSelection == false && appStore.isRiderForAnother == "1" ? MediaQuery.of(context).size.height * 0.60 : MediaQuery.of(context).size.height * 0.43)
+                  : MediaQuery.of(context).size.height * 0.5,
+              child: GoogleMap(
+                mapToolbarEnabled: false,
+                zoomControlsEnabled: false,
+                onMapCreated: onMapCreated,
+                initialCameraPosition: userCameraPosition,
+                markers: markers,
+                mapType: MapType.normal,
+                polylines: _polyLines,
+              ),
             ),
-          ),
-          !isBooking
-              ? Stack(
-                  children: [
-                    Visibility(
-                      visible: serviceList.isNotEmpty,
-                      child: Container(
-                        height: isRideSelection == false && appStore.isRiderForAnother == "1" ? MediaQuery.of(context).size.height * 0.40 : MediaQuery.of(context).size.height * 0.57,
-                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(defaultRadius), topRight: Radius.circular(defaultRadius))),
-                        child: SingleChildScrollView(
-                          child: isRideSelection == false && appStore.isRiderForAnother == "1"
-                              ? Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Center(
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          margin: EdgeInsets.only(bottom: 16),
-                                          height: 5,
-                                          width: 70,
-                                          decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(defaultRadius)),
+            !isBooking
+                ? Stack(
+                    children: [
+                      Visibility(
+                        visible: serviceList.isNotEmpty,
+                        child: Container(
+                          height: isRideSelection == false && appStore.isRiderForAnother == "1" ? MediaQuery.of(context).size.height * 0.40 : MediaQuery.of(context).size.height * 0.57,
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(defaultRadius), topRight: Radius.circular(defaultRadius))),
+                          child: SingleChildScrollView(
+                            child: isRideSelection == false && appStore.isRiderForAnother == "1"
+                                ? Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Center(
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsets.only(bottom: 16),
+                                            height: 5,
+                                            width: 70,
+                                            decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(defaultRadius)),
+                                          ),
                                         ),
-                                      ),
-                                      Text(language.lblWhoRiding, style: primaryTextStyle(size: 18)),
-                                      SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          inkWellWidget(
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Stack(
-                                                    children: [
-                                                      Container(
-                                                        height: 70,
-                                                        width: 70,
-                                                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: textSecondaryColorGlobal, width: 1)),
-                                                        padding: EdgeInsets.all(12),
-                                                        child: Image.asset(ic_add_user, fit: BoxFit.fill),
-                                                      ),
-                                                      if (!isOther)
+                                        Text(language.lblWhoRiding, style: primaryTextStyle(size: 18)),
+                                        SizedBox(height: 20),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            inkWellWidget(
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Stack(
+                                                      children: [
                                                         Container(
                                                           height: 70,
                                                           width: 70,
-                                                          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.black54),
-                                                          child: Icon(Icons.check, color: Colors.white),
+                                                          decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: textSecondaryColorGlobal, width: 1)),
+                                                          padding: EdgeInsets.all(12),
+                                                          child: Image.asset(ic_add_user, fit: BoxFit.fill),
                                                         ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 10),
-                                                  Text(language.lblSomeoneElse, style: primaryTextStyle()),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                isOther = false;
+                                                        if (!isOther)
+                                                          Container(
+                                                            height: 70,
+                                                            width: 70,
+                                                            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.black54),
+                                                            child: Icon(Icons.check, color: Colors.white),
+                                                          ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 10),
+                                                    Text(language.lblSomeoneElse, style: primaryTextStyle()),
+                                                  ],
+                                                ),
+                                                onTap: () {
+                                                  isOther = false;
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (_) {
+                                                      return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                                                        return AlertDialog(
+                                                          contentPadding: EdgeInsets.all(0),
+                                                          content: mSomeOnElse(),
+                                                        );
+                                                      });
+                                                    },
+                                                  ).then((value) {
+                                                    setState(() {});
+                                                  });
+                                                  setState(() {});
+                                                }),
+                                            SizedBox(width: 30),
+                                            inkWellWidget(
+                                                child: Column(
+                                                  children: [
+                                                    Stack(
+                                                      children: [
+                                                        ClipRRect(
+                                                          borderRadius: BorderRadius.circular(40),
+                                                          child: commonCachedNetworkImage(appStore.userProfile.validate(), height: 70, width: 70, fit: BoxFit.cover),
+                                                        ),
+                                                        if (isOther)
+                                                          Container(
+                                                            height: 70,
+                                                            width: 70,
+                                                            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.black54),
+                                                            child: Icon(Icons.check, color: Colors.white),
+                                                          ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 10),
+                                                    Text(language.lblYou, style: primaryTextStyle()),
+                                                  ],
+                                                ),
+                                                onTap: () {
+                                                  isOther = true;
+                                                  setState(() {});
+                                                })
+                                          ],
+                                        ),
+                                        SizedBox(height: 20),
+                                        Text(language.lblWhoRidingMsg, style: secondaryTextStyle()),
+                                        SizedBox(height: 8),
+                                        AppButtonWidget(
+                                          color: primaryColor,
+                                          onTap: () async {
+                                            if (!isOther) {
+                                              if (nameController.text.isEmptyOrNull || phoneController.text.isEmptyOrNull) {
                                                 showDialog(
                                                   context: context,
                                                   builder: (_) {
@@ -613,398 +666,347 @@ class NewEstimateRideListWidgetState extends State<NewEstimateRideListWidget> {
                                                 ).then((value) {
                                                   setState(() {});
                                                 });
-                                                setState(() {});
-                                              }),
-                                          SizedBox(width: 30),
-                                          inkWellWidget(
-                                              child: Column(
-                                                children: [
-                                                  Stack(
-                                                    children: [
-                                                      ClipRRect(
-                                                        borderRadius: BorderRadius.circular(40),
-                                                        child: commonCachedNetworkImage(appStore.userProfile.validate(), height: 70, width: 70, fit: BoxFit.cover),
-                                                      ),
-                                                      if (isOther)
-                                                        Container(
-                                                          height: 70,
-                                                          width: 70,
-                                                          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.black54),
-                                                          child: Icon(Icons.check, color: Colors.white),
-                                                        ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 10),
-                                                  Text(language.lblYou, style: primaryTextStyle()),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                isOther = true;
-                                                setState(() {});
-                                              })
-                                        ],
-                                      ),
-                                      SizedBox(height: 20),
-                                      Text(language.lblWhoRidingMsg, style: secondaryTextStyle()),
-                                      SizedBox(height: 8),
-                                      AppButtonWidget(
-                                        color: primaryColor,
-                                        onTap: () async {
-                                          if (!isOther) {
-                                            if (nameController.text.isEmptyOrNull || phoneController.text.isEmptyOrNull) {
-                                              showDialog(
-                                                context: context,
-                                                builder: (_) {
-                                                  return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-                                                    return AlertDialog(
-                                                      contentPadding: EdgeInsets.all(0),
-                                                      content: mSomeOnElse(),
-                                                    );
-                                                  });
-                                                },
-                                              ).then((value) {
-                                                setState(() {});
-                                              });
+                                              } else {
+                                                isRideSelection = true;
+                                              }
                                             } else {
                                               isRideSelection = true;
                                             }
-                                          } else {
-                                            isRideSelection = true;
-                                          }
-                                          setState(() {});
-                                        },
-                                        text: language.lblNext,
-                                        textStyle: boldTextStyle(color: Colors.white),
-                                        width: MediaQuery.of(context).size.width,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Center(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        margin: EdgeInsets.only(bottom: 8, top: 16),
-                                        height: 5,
-                                        width: 70,
-                                        decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(defaultRadius)),
-                                      ),
+                                            setState(() {});
+                                          },
+                                          text: language.lblNext,
+                                          textStyle: boldTextStyle(color: Colors.white),
+                                          width: MediaQuery.of(context).size.width,
+                                        ),
+                                      ],
                                     ),
-                                    SingleChildScrollView(
-                                      padding: EdgeInsets.only(left: 8, right: 8),
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: serviceList.map((e) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              if (e.discountAmount != 0) {
-                                                mSelectServiceAmount = e.subtotal!.toStringAsFixed(fixedDecimal);
-                                              } else {
-                                                mSelectServiceAmount = e.totalAmount!.toStringAsFixed(fixedDecimal);
-                                              }
-                                              selectedIndex = serviceList.indexOf(e);
-                                              servicesListData = e;
-                                              paymentMethodType = e.paymentMethod!;
-                                              cashList = paymentMethodType == 'cash_wallet' ? cashList = ['cash', 'wallet'] : cashList = [paymentMethodType];
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                                              margin: EdgeInsets.only(top: 16, left: 8, right: 8),
-                                              decoration: BoxDecoration(
-                                                color: selectedIndex == serviceList.indexOf(e) ? primaryColor : Colors.white,
-                                                border: Border.all(color: dividerColor),
-                                                borderRadius: BorderRadius.circular(defaultRadius),
-                                              ),
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(height: 8),
-                                                  commonCachedNetworkImage(e.serviceImage.validate(), height: 50, width: 100, fit: BoxFit.cover, alignment: Alignment.center),
-                                                  SizedBox(height: 8),
-                                                  Text(e.name.validate(), style: boldTextStyle(color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor)),
-                                                  SizedBox(height: 8),
-                                                  Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(language.capacity, style: secondaryTextStyle(size: 12, color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor)),
-                                                      SizedBox(width: 4),
-                                                      Text(e.capacity.toString() + " + 1", style: secondaryTextStyle(color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor)),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 8),
-                                                  Row(
-                                                    children: [
+                                  )
+                                : Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          margin: EdgeInsets.only(bottom: 8, top: 16),
+                                          height: 5,
+                                          width: 70,
+                                          decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(defaultRadius)),
+                                        ),
+                                      ),
+                                      SingleChildScrollView(
+                                        padding: EdgeInsets.only(left: 8, right: 8),
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: serviceList.map((e) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                if (e.discountAmount != 0) {
+                                                  mSelectServiceAmount = e.subtotal!.toStringAsFixed(fixedDecimal);
+                                                } else {
+                                                  mSelectServiceAmount = e.totalAmount!.toStringAsFixed(fixedDecimal);
+                                                }
+                                                selectedIndex = serviceList.indexOf(e);
+                                                servicesListData = e;
+                                                paymentMethodType = e.paymentMethod!;
+                                                cashList = paymentMethodType == 'cash_wallet' ? cashList = ['cash', 'wallet'] : cashList = [paymentMethodType];
+                                                setState(() {});
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                                                margin: EdgeInsets.only(top: 16, left: 8, right: 8),
+                                                decoration: BoxDecoration(
+                                                  color: selectedIndex == serviceList.indexOf(e) ? primaryColor : Colors.white,
+                                                  border: Border.all(color: dividerColor),
+                                                  borderRadius: BorderRadius.circular(defaultRadius),
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(height: 8),
+                                                    commonCachedNetworkImage(e.serviceImage.validate(), height: 50, width: 100, fit: BoxFit.cover, alignment: Alignment.center),
+                                                    SizedBox(height: 8),
+                                                    Text(e.name.validate(), style: boldTextStyle(color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor)),
+                                                    SizedBox(height: 8),
+                                                    Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(language.capacity, style: secondaryTextStyle(size: 12, color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor)),
+                                                        SizedBox(width: 4),
+                                                        Text(e.capacity.toString() + " + 1", style: secondaryTextStyle(color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor)),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 8),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          appStore.currencyPosition == LEFT
+                                                              ? '${appStore.currencyCode} ${e.totalAmount!.toStringAsFixed(fixedDecimal)}'
+                                                              : '${e.totalAmount!.toStringAsFixed(fixedDecimal)} ${appStore.currencyCode}',
+                                                          style: boldTextStyle(
+                                                            color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor,
+                                                            textDecoration: e.discountAmount != 0 ? TextDecoration.lineThrough : null,
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 8),
+                                                        inkWellWidget(
+                                                          onTap: () {
+                                                            showModalBottomSheet(
+                                                              context: context,
+                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(defaultRadius), topLeft: Radius.circular(defaultRadius))),
+                                                              builder: (_) {
+                                                                return CarDetailWidget(service: e);
+                                                              },
+                                                            );
+                                                          },
+                                                          child: Icon(Icons.info_outline_rounded, size: 18, color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    if (e.discountAmount != 0) SizedBox(height: 8),
+                                                    if (e.discountAmount != 0)
                                                       Text(
                                                         appStore.currencyPosition == LEFT
-                                                            ? '${appStore.currencyCode} ${e.totalAmount!.toStringAsFixed(fixedDecimal)}'
-                                                            : '${e.totalAmount!.toStringAsFixed(fixedDecimal)} ${appStore.currencyCode}',
+                                                            ? '${appStore.currencyCode} ${e.subtotal!.toStringAsFixed(fixedDecimal)}'
+                                                            : '${e.subtotal!.toStringAsFixed(fixedDecimal)} ${appStore.currencyCode}',
                                                         style: boldTextStyle(
                                                           color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor,
-                                                          textDecoration: e.discountAmount != 0 ? TextDecoration.lineThrough : null,
                                                         ),
                                                       ),
-                                                      SizedBox(width: 8),
-                                                      inkWellWidget(
-                                                        onTap: () {
-                                                          showModalBottomSheet(
-                                                            context: context,
-                                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(defaultRadius), topLeft: Radius.circular(defaultRadius))),
-                                                            builder: (_) {
-                                                              return CarDetailWidget(service: e);
-                                                            },
-                                                          );
-                                                        },
-                                                        child: Icon(Icons.info_outline_rounded, size: 18, color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      inkWellWidget(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                                                return Observer(builder: (context) {
+                                                  return Stack(
+                                                    children: [
+                                                      AlertDialog(
+                                                        contentPadding: EdgeInsets.all(16),
+                                                        content: SingleChildScrollView(
+                                                          child: Column(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+                                                                  Text(language.paymentMethod, style: boldTextStyle()),
+                                                                  inkWellWidget(
+                                                                    onTap: () {
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Container(
+                                                                      padding: EdgeInsets.all(6),
+                                                                      decoration: BoxDecoration(color: primaryColor, shape: BoxShape.circle),
+                                                                      child: Icon(Icons.close, color: Colors.white),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              SizedBox(height: 4),
+                                                              Text(language.chooseYouPaymentLate, style: secondaryTextStyle()),
+                                                              Text(isOther.toString(), style: secondaryTextStyle()),
+                                                              SizedBox(height: 16),
+                                                              isOther == false
+                                                                  ? RadioListTile(
+                                                                      contentPadding: EdgeInsets.zero,
+                                                                      controlAffinity: ListTileControlAffinity.trailing,
+                                                                      activeColor: primaryColor,
+                                                                      value: 'cash',
+                                                                      groupValue: 'cash',
+                                                                      title: Text(language.cash, style: boldTextStyle()),
+                                                                      onChanged: (String? val) {},
+                                                                    )
+                                                                  : Column(
+                                                                      children: cashList.map((e) {
+                                                                        return RadioListTile(
+                                                                          contentPadding: EdgeInsets.zero,
+                                                                          controlAffinity: ListTileControlAffinity.trailing,
+                                                                          activeColor: primaryColor,
+                                                                          value: e,
+                                                                          groupValue: paymentMethodType == 'cash_wallet' ? 'cash' : paymentMethodType,
+                                                                          title: Text(paymentStatus(e), style: boldTextStyle()),
+                                                                          onChanged: (String? val) {
+                                                                            paymentMethodType = val!;
+                                                                            setState(() {});
+                                                                          },
+                                                                        );
+                                                                      }).toList(),
+                                                                    ),
+                                                              SizedBox(height: 16),
+                                                              AppTextField(
+                                                                controller: promoCode,
+                                                                autoFocus: false,
+                                                                textFieldType: TextFieldType.EMAIL,
+                                                                keyboardType: TextInputType.emailAddress,
+                                                                errorThisFieldRequired: language.thisFieldRequired,
+                                                                readOnly: true,
+                                                                onTap: () async {
+                                                                  var data = await showModalBottomSheet(
+                                                                    context: context,
+                                                                    builder: (_) {
+                                                                      return CouPonWidget();
+                                                                    },
+                                                                  );
+                                                                  if (data != null) {
+                                                                    promoCode.text = data;
+                                                                  }
+                                                                },
+                                                                decoration: inputDecoration(context,
+                                                                    label: language.enterPromoCode,
+                                                                    suffixIcon: promoCode.text.isNotEmpty
+                                                                        ? inkWellWidget(
+                                                                            onTap: () {
+                                                                              promoCode.clear();
+                                                                              getNewService(coupon: false);
+                                                                            },
+                                                                            child: Icon(Icons.close, color: Colors.black, size: 25),
+                                                                          )
+                                                                        : null),
+                                                              ),
+                                                              SizedBox(height: 16),
+                                                              AppButtonWidget(
+                                                                width: MediaQuery.of(context).size.width,
+                                                                text: language.confirm,
+                                                                textStyle: boldTextStyle(color: Colors.white),
+                                                                color: primaryColor,
+                                                                onTap: () {
+                                                                  if (promoCode.text.isNotEmpty) {
+                                                                    getCouponNewService();
+                                                                    //getNewService(coupon: true);
+                                                                  } else {
+                                                                    // getNewService();
+                                                                    Navigator.pop(context);
+                                                                  }
+                                                                },
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ),
+                                                      Observer(builder: (context) {
+                                                        return Visibility(visible: appStore.isLoading, child: loaderWidget());
+                                                      }),
                                                     ],
+                                                  );
+                                                });
+                                              });
+                                            },
+                                          ).then((value) {
+                                            setState(() {});
+                                          });
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.fromLTRB(16, 8, 16, 16),
+                                          decoration: BoxDecoration(border: Border.all(color: dividerColor), borderRadius: BorderRadius.circular(defaultRadius)),
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(language.paymentVia, style: secondaryTextStyle(size: 12)),
+                                              SizedBox(height: 8),
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.all(4),
+                                                    margin: EdgeInsets.only(top: 4),
+                                                    decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(defaultRadius)),
+                                                    child: Icon(Icons.wallet_outlined, size: 20, color: Colors.white),
                                                   ),
-                                                  if (e.discountAmount != 0) SizedBox(height: 8),
-                                                  if (e.discountAmount != 0)
-                                                    Text(
-                                                      appStore.currencyPosition == LEFT
-                                                          ? '${appStore.currencyCode} ${e.subtotal!.toStringAsFixed(fixedDecimal)}'
-                                                          : '${e.subtotal!.toStringAsFixed(fixedDecimal)} ${appStore.currencyCode}',
-                                                      style: boldTextStyle(
-                                                        color: selectedIndex == serviceList.indexOf(e) ? Colors.white : primaryColor,
-                                                      ),
+                                                  SizedBox(width: 10),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          isOther == false
+                                                              ? language.cash
+                                                              : paymentMethodType == 'cash_wallet'
+                                                                  ? language.cash
+                                                                  : paymentStatus(paymentMethodType),
+                                                          style: boldTextStyle(size: 14),
+                                                        ),
+                                                        SizedBox(height: 4),
+                                                        SizedBox(height: 4),
+                                                        Text(paymentMethodType != 'cash_wallet' ? language.forInstantPayment : language.lblPayWhenEnds, style: secondaryTextStyle(size: 12)),
+                                                        if (mSelectServiceAmount != null && paymentMethodType != 'cash_wallet' && paymentMethodType == 'wallet' && double.parse(mSelectServiceAmount!) >= mTotalAmount.toDouble())
+                                                          Padding(
+                                                            padding: EdgeInsets.only(top: 4),
+                                                            child: Text(language.lblLessWalletAmount, style: boldTextStyle(size: 12, color: Colors.red, letterSpacing: 0.5, weight: FontWeight.w500)),
+                                                          ),
+                                                      ],
                                                     ),
+                                                  ),
                                                 ],
                                               ),
-                                            ),
-                                          );
-                                        }).toList(),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    inkWellWidget(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (_) {
-                                            return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-                                              return Observer(builder: (context) {
-                                                return Stack(
-                                                  children: [
-                                                    AlertDialog(
-                                                      contentPadding: EdgeInsets.all(16),
-                                                      content: SingleChildScrollView(
-                                                        child: Column(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                Text(language.paymentMethod, style: boldTextStyle()),
-                                                                inkWellWidget(
-                                                                  onTap: () {
-                                                                    Navigator.pop(context);
-                                                                  },
-                                                                  child: Container(
-                                                                    padding: EdgeInsets.all(6),
-                                                                    decoration: BoxDecoration(color: primaryColor, shape: BoxShape.circle),
-                                                                    child: Icon(Icons.close, color: Colors.white),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                            SizedBox(height: 4),
-                                                            Text(language.chooseYouPaymentLate, style: secondaryTextStyle()),
-                                                            Text(isOther.toString(), style: secondaryTextStyle()),
-                                                            SizedBox(height: 16),
-                                                            isOther == false
-                                                                ? RadioListTile(
-                                                                    contentPadding: EdgeInsets.zero,
-                                                                    controlAffinity: ListTileControlAffinity.trailing,
-                                                                    activeColor: primaryColor,
-                                                                    value: 'cash',
-                                                                    groupValue: 'cash',
-                                                                    title: Text(language.cash, style: boldTextStyle()),
-                                                                    onChanged: (String? val) {},
-                                                                  )
-                                                                : Column(
-                                                                    children: cashList.map((e) {
-                                                                      return RadioListTile(
-                                                                        contentPadding: EdgeInsets.zero,
-                                                                        controlAffinity: ListTileControlAffinity.trailing,
-                                                                        activeColor: primaryColor,
-                                                                        value: e,
-                                                                        groupValue: paymentMethodType == 'cash_wallet' ? 'cash' : paymentMethodType,
-                                                                        title: Text(paymentStatus(e), style: boldTextStyle()),
-                                                                        onChanged: (String? val) {
-                                                                          paymentMethodType = val!;
-                                                                          setState(() {});
-                                                                        },
-                                                                      );
-                                                                    }).toList(),
-                                                                  ),
-                                                            SizedBox(height: 16),
-                                                            AppTextField(
-                                                              controller: promoCode,
-                                                              autoFocus: false,
-                                                              textFieldType: TextFieldType.EMAIL,
-                                                              keyboardType: TextInputType.emailAddress,
-                                                              errorThisFieldRequired: language.thisFieldRequired,
-                                                              readOnly: true,
-                                                              onTap: () async {
-                                                                var data = await showModalBottomSheet(
-                                                                  context: context,
-                                                                  builder: (_) {
-                                                                    return CouPonWidget();
-                                                                  },
-                                                                );
-                                                                if (data != null) {
-                                                                  promoCode.text = data;
-                                                                }
-                                                              },
-                                                              decoration: inputDecoration(context,
-                                                                  label: language.enterPromoCode,
-                                                                  suffixIcon: promoCode.text.isNotEmpty
-                                                                      ? inkWellWidget(
-                                                                          onTap: () {
-                                                                            promoCode.clear();
-                                                                            getNewService(coupon: false);
-                                                                          },
-                                                                          child: Icon(Icons.close, color: Colors.black, size: 25),
-                                                                        )
-                                                                      : null),
-                                                            ),
-                                                            SizedBox(height: 16),
-                                                            AppButtonWidget(
-                                                              width: MediaQuery.of(context).size.width,
-                                                              text: language.confirm,
-                                                              textStyle: boldTextStyle(color: Colors.white),
-                                                              color: primaryColor,
-                                                              onTap: () {
-                                                                if (promoCode.text.isNotEmpty) {
-                                                                  getCouponNewService();
-                                                                  //getNewService(coupon: true);
-                                                                } else {
-                                                                  // getNewService();
-                                                                  Navigator.pop(context);
-                                                                }
-                                                              },
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Observer(builder: (context) {
-                                                      return Visibility(visible: appStore.isLoading, child: loaderWidget());
-                                                    }),
-                                                  ],
-                                                );
-                                              });
-                                            });
-                                          },
-                                        ).then((value) {
-                                          setState(() {});
-                                        });
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.fromLTRB(16, 8, 16, 16),
-                                        decoration: BoxDecoration(border: Border.all(color: dividerColor), borderRadius: BorderRadius.circular(defaultRadius)),
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 16, right: 16),
+                                        child: Row(
                                           children: [
-                                            Text(language.paymentVia, style: secondaryTextStyle(size: 12)),
-                                            SizedBox(height: 8),
-                                            Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.all(4),
-                                                  margin: EdgeInsets.only(top: 4),
-                                                  decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(defaultRadius)),
-                                                  child: Icon(Icons.wallet_outlined, size: 20, color: Colors.white),
-                                                ),
-                                                SizedBox(width: 10),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        isOther == false
-                                                            ? language.cash
-                                                            : paymentMethodType == 'cash_wallet'
-                                                                ? language.cash
-                                                                : paymentStatus(paymentMethodType),
-                                                        style: boldTextStyle(size: 14),
-                                                      ),
-                                                      SizedBox(height: 4),
-                                                      SizedBox(height: 4),
-                                                      Text(paymentMethodType != 'cash_wallet' ? language.forInstantPayment : language.lblPayWhenEnds, style: secondaryTextStyle(size: 12)),
-                                                      if (mSelectServiceAmount != null && paymentMethodType != 'cash_wallet' && paymentMethodType == 'wallet' && double.parse(mSelectServiceAmount!) >= mTotalAmount.toDouble())
-                                                        Padding(
-                                                          padding: EdgeInsets.only(top: 4),
-                                                          child: Text(language.lblLessWalletAmount, style: boldTextStyle(size: 12, color: Colors.red, letterSpacing: 0.5, weight: FontWeight.w500)),
-                                                        ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                                            Expanded(
+                                              flex: 3,
+                                              child: AppButtonWidget(
+                                                onTap: () {
+                                                  saveBookingData();
+                                                },
+                                                text: language.bookNow,
+                                                textStyle: boldTextStyle(color: Colors.white),
+                                                width: MediaQuery.of(context).size.width,
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 16, right: 16),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 3,
-                                            child: AppButtonWidget(
-                                              onTap: () {
-                                                saveBookingData();
-                                              },
-                                              text: language.bookNow,
-                                              textStyle: boldTextStyle(color: Colors.white),
-                                              width: MediaQuery.of(context).size.width,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(height: 16),
-                                  ],
-                                ),
+
+                                    ],
+                                  ),
+                          ),
                         ),
                       ),
-                    ),
-                    Visibility(
-                        visible: !appStore.isLoading && serviceList.isEmpty,
-                        child: Container(
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(defaultRadius), topRight: Radius.circular(defaultRadius))),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              emptyWidget(),
-                              Text(language.servicesNotFound, style: boldTextStyle()),
-                              SizedBox(height: 8),
-                            ],
-                          ),
-                        )),
-                    Observer(builder: (context) {
-                      return Visibility(visible: appStore.isLoading, child: loaderWidget());
-                    }),
-                  ],
-                )
-              : Container(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(defaultRadius), topRight: Radius.circular(defaultRadius))),
-                  child: rideRequest != null
-                      ? rideRequest!.status == NEW_RIDE_REQUESTED
-                          ? BookingWidget(id: widget.id, isLast: true)
-                          : RideAcceptWidget(rideRequest: rideRequest, driverData: driverData)
-                      : BookingWidget(id: rideRequestId == 0 ? widget.id : rideRequestId, isLast: true),
-                ),
-        ],
+                      Visibility(
+                          visible: !appStore.isLoading && serviceList.isEmpty,
+                          child: Container(
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(defaultRadius), topRight: Radius.circular(defaultRadius))),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                emptyWidget(),
+                                Text(language.servicesNotFound, style: boldTextStyle()),
+
+                              ],
+                            ),
+                          )),
+                      Observer(builder: (context) {
+                        return Visibility(visible: appStore.isLoading, child: loaderWidget());
+                      }),
+                    ],
+                  )
+                : Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(defaultRadius), topRight: Radius.circular(defaultRadius))),
+                    child: rideRequest != null
+                        ? rideRequest!.status == NEW_RIDE_REQUESTED
+                            ? BookingWidget(id: widget.id, isLast: true)
+                            : RideAcceptWidget(rideRequest: rideRequest, driverData: driverData)
+                        : BookingWidget(id: rideRequestId == 0 ? widget.id : rideRequestId, isLast: true),
+                  ),
+          ],
+        ),
       ),
     );
   }
