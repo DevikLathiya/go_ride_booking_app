@@ -247,6 +247,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                               children: [
                                 Image.asset(
                                   element['icon'],
+                                  height: 35,width: 35,
                                   color: Colors.black,
                                 ),
                                 SizedBox(
