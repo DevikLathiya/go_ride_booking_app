@@ -63,6 +63,7 @@ class GoRideSignUpScreenState extends State<GoRideSignUpScreen>
   FocusNode phoneFocus = FocusNode();
   FocusNode passFocus = FocusNode();
 
+  bool isPasswordVisible = false;
   bool mIsCheck = true;
   bool isAcceptedTc = true;
 
@@ -222,7 +223,7 @@ class GoRideSignUpScreenState extends State<GoRideSignUpScreen>
                       Icons.person,
                       color: Color(0xff212121).withOpacity(0.7),
                     )),
-                hintText: "First Name",
+                hintText: GoRideStringRes.FirstName,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xff707070)),
                 ),
@@ -260,7 +261,7 @@ class GoRideSignUpScreenState extends State<GoRideSignUpScreen>
                       Icons.person,
                       color: Color(0xff212121).withOpacity(0.7),
                     )),
-                hintText: "Last Name",
+                hintText: GoRideStringRes.LastName,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xff707070)),
                 ),
@@ -298,7 +299,7 @@ class GoRideSignUpScreenState extends State<GoRideSignUpScreen>
                       Icons.person,
                       color: Color(0xff212121).withOpacity(0.7),
                     )),
-                hintText: "User Name",
+                hintText: GoRideStringRes.UserName,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xff707070)),
                 ),
@@ -336,7 +337,7 @@ class GoRideSignUpScreenState extends State<GoRideSignUpScreen>
                       Icons.email_outlined,
                       color: Color(0xff212121).withOpacity(0.7),
                     )),
-                hintText: GoRideStringRes.hintEmail,
+                hintText: GoRideStringRes.EnterEmail,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xff707070)),
                 ),
@@ -375,7 +376,7 @@ class GoRideSignUpScreenState extends State<GoRideSignUpScreen>
                       Icons.call_outlined,
                       color: Color(0xff212121).withOpacity(0.7),
                     )),
-                hintText: "0123456789",
+                hintText: GoRideStringRes.EnterContact,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xff707070)),
                 ),
@@ -405,7 +406,7 @@ class GoRideSignUpScreenState extends State<GoRideSignUpScreen>
               autofocus: false,
               textInputAction: TextInputAction.done,
               validator: (value) => value!.validatePassword2(),
-              obscureText: true,
+              obscureText: isPasswordVisible,
               cursorColor: Color(0xffa2a2a2),
               obscuringCharacter: '●',
               decoration: InputDecoration(
@@ -415,11 +416,23 @@ class GoRideSignUpScreenState extends State<GoRideSignUpScreen>
                       GoRideConstant.getSvgImagePath("pass_icon.svg"),
                       fit: BoxFit.scaleDown,
                     )),
-                suffixIcon: SvgPicture.asset(
-                  GoRideConstant.getSvgImagePath("eye_icon.svg"),
-                  fit: BoxFit.scaleDown,
+                suffixIcon: GestureDetector(
+                  child: Icon(
+                    isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey ?? Theme.of(context).iconTheme.color,
+                    //color: widget.suffixIconColor ?? Theme.of(context).iconTheme.color,
+                  ),
+                  onTap: () {
+                    isPasswordVisible = !isPasswordVisible;
+
+                    setState(() {});
+                  },
                 ),
-                hintText: "●●●●●●●",
+                // SvgPicture.asset(
+                //   GoRideConstant.getSvgImagePath("eye_icon.svg"),
+                //   fit: BoxFit.scaleDown,
+                // ),
+                hintText: GoRideStringRes.EnterPassword,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xff707070)),
                 ),

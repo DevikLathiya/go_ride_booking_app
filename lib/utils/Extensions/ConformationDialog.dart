@@ -1,3 +1,4 @@
+import 'package:cabuser/Helper/GoRideColor.dart';
 import 'package:flutter/material.dart';
 import '../../utils/Extensions/app_common.dart';
 import '../../utils/Extensions/StringExtensions.dart';
@@ -334,7 +335,7 @@ Future<bool?> showConfirmDialogCustom(
                             children: [
                               Icon(
                                 Icons.close,
-                                color: textPrimaryColorGlobal,
+                                color: GoRideColors.black,
                                 size: 20,
                               ),
                               SizedBox(width: 6),
@@ -369,7 +370,7 @@ Future<bool?> showConfirmDialogCustom(
                               SizedBox(width: 6),
                               Text(
                                 positiveText ?? getPositiveText(dialogType),
-                                style: boldTextStyle(color: Colors.white),
+                                style: boldTextStyle(color: Colors.black),
                               ),
                             ],
                           ),

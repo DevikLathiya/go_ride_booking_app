@@ -106,7 +106,7 @@ class LanguageScreenState extends State<LanguageScreen> {
               child: ListView(
                 children: List.generate(localeLanguageList.length, (index) {
                   LanguageDataModel data = localeLanguageList[index];
-                  return inkWellWidget(
+                  return InkWell(
                     onTap: () async {
                       await sharedPref.setString(SELECTED_LANGUAGE_CODE, data.languageCode!);
                       selectedLanguageDataModel = data;

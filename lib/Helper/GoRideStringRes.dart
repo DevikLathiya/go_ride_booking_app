@@ -118,5 +118,11 @@ class GoRideStringRes {
   static const Setting = "Setting";
   static const PrivacyPolicy = "Privacy Policy";
   static const Terms$Condition = "Terms & Condition";
+  static const FirstName = "Enter First Name";
+  static const LastName = "Enter Last Name";
+  static const UserName = "Enter User Name";
+  static const EnterEmail = "Enter Email Address";
+  static const EnterContact = "Enter Contact No.";
+  static const EnterPassword = "Enter Password";
 
 }

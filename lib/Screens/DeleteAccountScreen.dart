@@ -123,8 +123,8 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen> {
                             Center(
                               child: AppButtonWidget(
                                 text: language.deleteAccount,
-                                textStyle: boldTextStyle(color: Colors.white),
-                                color: Colors.red,
+                                textStyle: boldTextStyle(color: Colors.black),
+                                color: GoRideColors.yellow,
                                 onTap: () async {
                                   await showConfirmDialogCustom(
                                     context,
@@ -140,6 +140,7 @@ class DeleteAccountScreenState extends State<DeleteAccountScreen> {
                                       }
                                     },
                                   );
+
                                 },
                               ),
                             )
